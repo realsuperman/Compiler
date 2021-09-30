@@ -115,8 +115,7 @@ void get_token() {
 	}
 
 }
-void error(int i)
-{
+void error(int i){
 	switch (i) {
 		case 1: printf("여는 괄호 없음\n"); break;
 		case 2: printf("닫는 괄호 없음\n"); break;
@@ -125,8 +124,7 @@ void error(int i)
 	exit(1);
 }
 
-int main(void)
-{
+int main(void){
 	value result;
 	ch = ' ';
 	get_token();
