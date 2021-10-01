@@ -11,7 +11,7 @@ extern int yylval;
 
 %%
 {ws} 							{ }
-{line} 							{ }
+{line} 							{}
 auto 							{ return(AUTO_SYM); }
 break 							{ return(BREAK_SYM); }
 case 							{ return(CASE_SYM); }
@@ -44,6 +44,7 @@ void                            { return(TYPE_IDENTIFIER);}
 "==" 							{ return(EQL); }
 "!=" 							{ return(NEQ); }
 "&&" 							{ return(AMPAMP); }
+"\|" 							{ return(BAR); }
 "||" 							{ return(BARBAR); }
 "\.\.\." 						{ return(DOTDOTDOT); }
 "\("							{ return(LP); }
@@ -52,6 +53,7 @@ void                            { return(TYPE_IDENTIFIER);}
 "\]" 							{ return(RB); }
 "\{" 							{ return(LR); }
 "\}" 							{ return(RR); }
+"\^" 							{ return(SMILEMARK); }
 "\:" 							{ return(COLON); }
 "\." 							{ return(PERIOD); }
 "\," 							{ return(COMMA); }
