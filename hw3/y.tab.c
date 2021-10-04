@@ -1921,11 +1921,10 @@ yyreturn:
 }
 #line 365 "kim.y"
 
+int line_no;
 extern char *yytext;
 void yyerror(char *s){
-	printf("syntax Error\n");
-	//printf("line %d: %s near %s \n",10,s,yytext); 
-	//printf("line %d: %s near %s \n",line_no,s,yytext);
+	printf("line %d: %s near %s \n",line_no,s,yytext);
 }
 void yywrap(char *s){}
 int main(){
