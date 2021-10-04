@@ -356,7 +356,6 @@ assignment_expression
 
 expression
 	: assignment_expression
-    | expression COMMA assignment_expression
 	;
 
 constant_expression
