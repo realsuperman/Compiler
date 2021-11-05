@@ -1,5 +1,3 @@
-#define YYSTYPE_IS_DECLARED  1
-typedef long YYSTYPE;
 digit [0-9]
 letter [a-zA-Z_]
 delim [ \t]
@@ -7,9 +5,15 @@ line [\n]
 ws {delim}+
 
 %{
+#define YYSTYPE_IS_DECLARED  1
+typedef long YYSTYPE;
 #include "y.tab.h"
-extern int yylval;
+#include "type.h"
+//extern int yylval;
 extern int line_no;
+extern A_ID *current_id;
+char *makeString();
+int checkIdentifier();
 %}
 
 %%
@@ -33,10 +37,6 @@ switch 							{ return(SWITCH_SYM); }
 typedef 						{ return(TYPEDEF_SYM); }
 union 							{ return(UNION_SYM); }
 while 							{ return(WHILE_SYM); }
-int                             { return(TYPE_IDENTIFIER);}
-float                           { return(TYPE_IDENTIFIER);}
-char                            { return(TYPE_IDENTIFIER);}
-void                            { return(TYPE_IDENTIFIER);}
 "\+\+" 							{ return(PLUSPLUS); }
 "\-\-" 							{ return(MINUSMINUS); }
 "\->" 							{ return(ARROW); }
@@ -69,9 +69,35 @@ void                            { return(TYPE_IDENTIFIER);}
 "\+" 							{ return(PLUS); }
 "\-" 							{ return(MINUS); }
 "\=" 							{ return(ASSIGN); }
-{digit}+ 						{ return(INTEGER_CONSTANT);}
-{digit}+\.{digit}+ 				{ return(FLOAT_CONSTANT);}
-{letter}({letter}|{digit})* 	{ return(IDENTIFIER);}
-\"([^"\n]|\\["\n])*\" 			{ return(STRING_LITERAL);}
-\'([^'\n]|\'\')\'			 	{ return(CHARACTER_CONSTANT);}
+{digit}+ 						{ yylval=atoi(yytext); return(INTEGER_CONSTANT); }
+{digit}+\.{digit}+ 				{ yylval=makeString(yytext); return(FLOAT_CONSTANT); }
+{letter}({letter}|{digit})* 	{ return(checkIdentifier(yytext)); }
+\"([^"\n]|\\["\n])*\" 			{ yylval=makeString(yytext); return(STRING_LITERAL); }
+\'([^'\n]|\'\')\'			 	{ yylval=*(yytext+1); return(CHARACTER_CONSTANT); }
 %%
+char *makeString(char *s) {
+    char *t;
+    t=malloc(strlen(s)+1);
+    strcpy(t,s);
+    return(t);
+}
+
+int checkIdentifier(char *s) {
+    A_ID *id;
+    char *t;
+    id=current_id;
+    while (id) {
+        if (strcmp(id->name,s)==0) break;
+        id=id->prev; 
+    }
+    if (id==0) {
+        yylval=makeString(s);
+        return(IDENTIFIER); 
+    }else if (id->kind==ID_TYPE) {
+        yylval=id->type;
+        return(TYPE_IDENTIFIER); 
+    }else {
+        yylval=id->name;
+        return(IDENTIFIER);
+    }
+}
