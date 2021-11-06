@@ -56,7 +56,6 @@ while 							{ return(WHILE_SYM); }
 "\]" 							{ return(RB); }
 "\{" 							{ return(LR); }
 "\}" 							{ return(RR); }
-"\^" 							{ return(SMILEMARK); }
 "\:" 							{ return(COLON); }
 "\." 							{ return(PERIOD); }
 "\," 							{ return(COMMA); }
@@ -75,6 +74,7 @@ while 							{ return(WHILE_SYM); }
 \"([^"\n]|\\["\n])*\" 			{ yylval=makeString(yytext); return(STRING_LITERAL); }
 \'([^'\n]|\'\')\'			 	{ yylval=*(yytext+1); return(CHARACTER_CONSTANT); }
 %%
+
 char *makeString(char *s) {
     char *t;
     t=malloc(strlen(s)+1);

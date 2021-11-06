@@ -39,9 +39,9 @@ A_TYPE *setTypeField(A_TYPE *,A_ID *);
 A_TYPE *setTypeExpr(A_TYPE *,A_NODE *);
 A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *,ID_KIND,A_ID *);
 A_TYPE *setTypeStructOrEnumIdentifier(T_KIND,char *,ID_KIND);
-BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
-BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
-BOOLEAN isPointerOrArrayType(A_TYPE *);
+//BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
+//BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
+//BOOLEAN isPointerOrArrayType(A_TYPE *);
 void syntax_error();
 void initialize();
 
@@ -265,15 +265,15 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p) {
     }
     a=searchIdentifierAtCurrentLevel(id->name,id->prev);
     if(a) 
-        if(a->kind!=ID_FUNC || a->type->expr) syntax_err(12,id->name);
-    else {
-        if(isNotSameFormalParameters(a->type->filed,id->type->field)) syntax_err(22,id->name);
+        if(a->kind!=ID_FUNC || a->type->expr) syntax_error(12,id->name);
+    /*else {
+        if(isNotSameFormalParameters(a->type->field,id->type->field)) syntax_error(22,id->name);
         if(isNotSameType(a->type->element_type,id->type->element_type)) syntax_error(26,a->name);
-    }
+    }*/
     a=id->type->field;
     while(a){
         if(strlen(a->name)) current_id=a;
-        else if(a->type) syntax_err(23);
+        else if(a->type) syntax_error(23);
         a=a->link;
     }
     return(id);
@@ -289,7 +289,7 @@ A_ID *setDeclaratorListSpecifier(A_ID *id, A_SPECIFIER *p) {
     setDefaultSpecifier(p);
     a=id;
     while(a){
-        if(strlen(a->name)&&searchIdentifierAtCurrentLevel(a->name,a->prev)) syntax_err(12,a->name);
+        if(strlen(a->name)&&searchIdentifierAtCurrentLevel(a->name,a->prev)) syntax_error(12,a->name);
         a=setDeclaratorElementType(a,p->type);
         if(p->stor==S_TYPEDEF) a->kind=ID_TYPE;
         else if(a->type->kind==T_FUNC) a->kind=ID_FUNC;
@@ -302,8 +302,8 @@ A_ID *setDeclaratorListSpecifier(A_ID *id, A_SPECIFIER *p) {
 }
 
 A_ID *setParameterDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p) {
-    if(searchIdentifierAtCurrentLevel(id->name,id->prev)) syntax_err(12,id->name);
-    if(p->stor || p->type==void_type) syntax_err(14);
+    if(searchIdentifierAtCurrentLevel(id->name,id->prev)) syntax_error(12,id->name);
+    if(p->stor || p->type==void_type) syntax_error(14);
     setDefaultSpecifier(p);
     id=setDeclaratorElementType(id,p->type);
     id->kind=ID_PARM;
@@ -314,7 +314,7 @@ A_ID *setStructDeclaratorListSpecifier(A_ID *id, A_TYPE *t) {
     A_ID *a;
     a=id;
     while (a) {
-        if(searchIdentifierAtCurrentLevel(a->name,a->prev)) syntax_err(12,a->name);
+        if(searchIdentifierAtCurrentLevel(a->name,a->prev)) syntax_error(12,a->name);
         a=setDeclaratorElementType(a,t);
         a->kind=ID_FIELD;
         a=a->link;
@@ -371,7 +371,7 @@ A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *t, ID_KIND k, A_ID *id) {
     return(t);
 }
 
-BOOLEAN isNotSameFormalParameters(A_ID *a, A_ID *b) {
+/*BOOLEAN isNotSameFormalParameters(A_ID *a, A_ID *b) {
     if (a==NIL) return(FALSE);
     while(a) {
         if (b==NIL || isNotSameType(a->type,b->type)) return(TRUE);
@@ -384,7 +384,7 @@ BOOLEAN isNotSameFormalParameters(A_ID *a, A_ID *b) {
 BOOLEAN isNotSameType(A_TYPE *t1, A_TYPE *t2) {
     if (isPointerOrArrayType(t1) || isPointerOrArrayType(t2)) return (isNotSameType(t1->element_type,t2->element_type));
     else return (t1!=t2);
-}
+}*/
 
 void initialize() {
     int_type=setTypeAndKindOfDeclarator(makeType(T_ENUM),ID_TYPE,makeIdentifier("int"));
@@ -398,30 +398,11 @@ void initialize() {
     void_type->size=0; void_type->check=TRUE;
     string_type->size=4; string_type->check=TRUE;
 
-    setDeclaratorTypeAndKind(
-        makeIdentifier("printf"),
-        setTypeField(
-            setTypeElementType(makeType(T_FUNC),void_type),
-            linkDeclaratorList(
-    setDeclaratorTypeAndKind(makeDummyIdentifier(),string_type,ID_PARM),
-                    setDeclaratorKind(makeDummyIdentifier(),ID_PARM))),
-            ID_FUNC);
+    setDeclaratorTypeAndKind(makeIdentifier("printf"),setTypeField(setTypeElementType(makeType(T_FUNC),void_type),linkDeclaratorList(setDeclaratorTypeAndKind(makeDummyIdentifier(),string_type,ID_PARM),setDeclaratorKind(makeDummyIdentifier(),ID_PARM))),ID_FUNC);
 
-    setDeclaratorTypeAndKind(
-            makeIdentifier("scanf"),
-            setTypeField(
-                setTypeElementType(makeType(T_FUNC),void_type),
-                linkDeclaratorList(
-    setDeclaratorTypeAndKind(makeDummyIdentifier(),string_type,ID_PARM),
-            setDeclaratorKind(makeDummyIdentifier(),ID_PARM))),
-            ID_FUNC);
+    setDeclaratorTypeAndKind(makeIdentifier("scanf"),setTypeField(setTypeElementType(makeType(T_FUNC),void_type),linkDeclaratorList(setDeclaratorTypeAndKind(makeDummyIdentifier(),string_type,ID_PARM),setDeclaratorKind(makeDummyIdentifier(),ID_PARM))),ID_FUNC);
 
-    setDeclaratorTypeAndKind(
-            makeIdentifier("malloc"),
-            setTypeField(
-                setTypeElementType(makeType(T_FUNC),string_type),
-    setDeclaratorTypeAndKind(makeDummyIdentifier(),int_type,ID_PARM)),
-            ID_FUNC);
+    setDeclaratorTypeAndKind(makeIdentifier("malloc"),setTypeField(setTypeElementType(makeType(T_FUNC),string_type),setDeclaratorTypeAndKind(makeDummyIdentifier(),int_type,ID_PARM)),ID_FUNC);
 }
 void syntax_error(int i,char *s) {
     syntax_err++;
