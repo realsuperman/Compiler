@@ -10,9 +10,61 @@
 	extern A_ID *current_id;
 	extern int current_level;
 	extern A_TYPE *int_type;
+	extern char *yytext;
 	void yywrap(char *s);
-	void initialize();
-	void print_ast();
+	//void initialize();
+	//void print_ast();
+void print_ast(A_NODE *);
+void prt_program(A_NODE *, int);
+void prt_initializer(A_NODE *, int);
+void prt_arg_expr_list(A_NODE *, int);
+void prt_statement(A_NODE *, int);
+void prt_statement_list(A_NODE *, int);
+void prt_for_expression(A_NODE *, int);
+void prt_expression(A_NODE *, int);
+void prt_A_TYPE(A_TYPE *, int);
+void prt_A_ID_LIST(A_ID *, int);
+void prt_A_ID(A_ID *, int);
+void prt_A_ID_NAME(A_ID *, int);
+void prt_STRING(char *, int);
+void prt_integer(int, int);
+void print_node(A_NODE *,int);
+void print_space(int);
+A_NODE *makeNode (NODE_NAME,A_NODE *,A_NODE *,A_NODE *);
+A_NODE *makeNodeList (NODE_NAME,A_NODE *,A_NODE *);
+A_ID *makeIdentifier(char *);
+A_ID *makeDummyIdentifier();
+A_TYPE *makeType(T_KIND);
+A_SPECIFIER *makeSpecifier(A_TYPE *,S_KIND);
+A_ID *searchIdentifier(char *,A_ID *);
+A_ID *searchIdentifierAtCurrentLevel(char *,A_ID *);
+A_SPECIFIER *updateSpecifier(A_SPECIFIER *, A_TYPE *, S_KIND);
+void checkForwardReference();
+void setDefaultSpecifier(A_SPECIFIER *);
+A_ID *linkDeclaratorList(A_ID *,A_ID *) ;
+A_ID *getIdentifierDeclared(char *);
+A_TYPE *getTypeOfStructOrEnumRefIdentifier(T_KIND,char *,ID_KIND);
+A_ID *setDeclaratorInit(A_ID *,A_NODE *);
+A_ID *setDeclaratorKind(A_ID *,ID_KIND);
+A_ID *setDeclaratorType(A_ID *,A_TYPE *);
+A_ID *setDeclaratorElementType(A_ID *,A_TYPE *);
+A_ID *setDeclaratorTypeAndKind(A_ID *,A_TYPE *,ID_KIND);
+A_ID *setDeclaratorListSpecifier(A_ID *,A_SPECIFIER *);
+A_ID *setFunctionDeclaratorSpecifier(A_ID *, A_SPECIFIER *);
+A_ID *setFunctionDeclaratorBody(A_ID *, A_NODE *);
+A_ID *setParameterDeclaratorSpecifier(A_ID *, A_SPECIFIER *);
+A_ID *setStructDeclaratorListSpecifier(A_ID *, A_TYPE *);
+A_TYPE *setTypeNameSpecifier(A_TYPE *, A_SPECIFIER *);
+A_TYPE *setTypeElementType(A_TYPE *,A_TYPE *);
+A_TYPE *setTypeField(A_TYPE *,A_ID *);
+A_TYPE *setTypeExpr(A_TYPE *,A_NODE *);
+A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *,ID_KIND,A_ID *);
+A_TYPE *setTypeStructOrEnumIdentifier(T_KIND,char *,ID_KIND);
+//BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
+//BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
+//BOOLEAN isPointerOrArrayType(A_TYPE *);
+void syntax_error();
+void initialize();
 %}
 %start program
 %token  IDENTIFIER TYPE_IDENTIFIER FLOAT_CONSTANT INTEGER_CONSTANT 
@@ -343,47 +395,47 @@ equality_expression
 	;
 
 relational_expression
-: shift_expression {$$=$1;}
-| relational_expression LSS shift_expression {$$=makeNode(N_EXP_LSS,$1,NIL,$3);}
-| relational_expression GTR shift_expression {$$=makeNode(N_EXP_GTR,$1,NIL,$3);}
-| relational_expression LEQ shift_expression {$$=makeNode(N_EXP_LEQ,$1,NIL,$3);}
-| relational_expression GEQ shift_expression {$$=makeNode(N_EXP_GEQ,$1,NIL,$3);}
-;
+	: shift_expression {$$=$1;}
+	| relational_expression LSS shift_expression {$$=makeNode(N_EXP_LSS,$1,NIL,$3);}
+	| relational_expression GTR shift_expression {$$=makeNode(N_EXP_GTR,$1,NIL,$3);}
+	| relational_expression LEQ shift_expression {$$=makeNode(N_EXP_LEQ,$1,NIL,$3);}
+	| relational_expression GEQ shift_expression {$$=makeNode(N_EXP_GEQ,$1,NIL,$3);}
+	;
 
 shift_expression
-: additive_expression {$$=$1;}
-;
+	: additive_expression {$$=$1;}
+	;
 
 additive_expression
-: multiplicative_expression {$$=$1;}
-| additive_expression PLUS multiplicative_expression {$$=makeNode(N_EXP_ADD,$1,NIL,$3);}
-| additive_expression MINUS multiplicative_expression {$$=makeNode(N_EXP_SUB,$1,NIL,$3);}
-;
+	: multiplicative_expression {$$=$1;}
+	| additive_expression PLUS multiplicative_expression {$$=makeNode(N_EXP_ADD,$1,NIL,$3);}
+	| additive_expression MINUS multiplicative_expression {$$=makeNode(N_EXP_SUB,$1,NIL,$3);}
+	;
 
 multiplicative_expression
-: cast_expression {$$=$1;}
-| multiplicative_expression STAR cast_expression {$$=makeNode(N_EXP_MUL,$1,NIL,$3);}
-| multiplicative_expression SLASH cast_expression {$$= makeNode(N_EXP_DIV,$1,NIL,$3);}
-| multiplicative_expression PERCENT cast_expression {$$= makeNode(N_EXP_MOD,$1,NIL,$3);}
-;
+	: cast_expression {$$=$1;}
+	| multiplicative_expression STAR cast_expression {$$=makeNode(N_EXP_MUL,$1,NIL,$3);}
+	| multiplicative_expression SLASH cast_expression {$$= makeNode(N_EXP_DIV,$1,NIL,$3);}
+	| multiplicative_expression PERCENT cast_expression {$$= makeNode(N_EXP_MOD,$1,NIL,$3);}
+	;
 
 cast_expression
-: unary_expression {$$=$1;}
-| LP type_name RP cast_expression {$$=makeNode(N_EXP_CAST,$2,NIL,$4);}
-;
+	: unary_expression {$$=$1;}
+	| LP type_name RP cast_expression {$$=makeNode(N_EXP_CAST,$2,NIL,$4);}
+	;
 
 unary_expression
-: postfix_expression {$$=$1;}
-| PLUSPLUS unary_expression {$$=makeNode(N_EXP_PRE_INC,NIL,$2,NIL);}
-| MINUSMINUS unary_expression {$$=makeNode(N_EXP_PRE_DEC,NIL,$2,NIL);}
-| AMP cast_expression {$$=makeNode(N_EXP_AMP,NIL,$2,NIL);}
-| STAR cast_expression {$$=makeNode(N_EXP_STAR,NIL,$2,NIL);}
-| EXCL cast_expression {$$=makeNode(N_EXP_NOT,NIL,$2,NIL);}
-| MINUS cast_expression {$$=makeNode(N_EXP_MINUS,NIL,$2,NIL);}
-| PLUS cast_expression {$$=makeNode(N_EXP_PLUS,NIL,$2,NIL);}
-| SIZEOF_SYM unary_expression {$$=makeNode(N_EXP_SIZE_EXP,NIL,$2,NIL);}
-| SIZEOF_SYM LP type_name RP {$$=makeNode(N_EXP_SIZE_TYPE,NIL,$3,NIL);}
-;
+	: postfix_expression {$$=$1;}
+	| PLUSPLUS unary_expression {$$=makeNode(N_EXP_PRE_INC,NIL,$2,NIL);}
+	| MINUSMINUS unary_expression {$$=makeNode(N_EXP_PRE_DEC,NIL,$2,NIL);}
+	| AMP cast_expression {$$=makeNode(N_EXP_AMP,NIL,$2,NIL);}
+	| STAR cast_expression {$$=makeNode(N_EXP_STAR,NIL,$2,NIL);}
+	| EXCL cast_expression {$$=makeNode(N_EXP_NOT,NIL,$2,NIL);}
+	| MINUS cast_expression {$$=makeNode(N_EXP_MINUS,NIL,$2,NIL);}
+	| PLUS cast_expression {$$=makeNode(N_EXP_PLUS,NIL,$2,NIL);}
+	| SIZEOF_SYM unary_expression {$$=makeNode(N_EXP_SIZE_EXP,NIL,$2,NIL);}
+	| SIZEOF_SYM LP type_name RP {$$=makeNode(N_EXP_SIZE_TYPE,NIL,$3,NIL);}
+	;
 
 postfix_expression
 	: primary_expression {$$=$1;}
@@ -415,6 +467,7 @@ type_name
 	;
 
 %%
+
 void yyerror(char *s){
 	syntax_err++;
 	printf("line %d: %s near %s \n",line_no,s,yytext);

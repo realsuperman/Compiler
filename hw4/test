@@ -1,0 +1,3 @@
+yacc -d kim.y
+lex kim.l
+gcc y.tab.c lex.yy.c syntax.c print.c
