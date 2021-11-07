@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define NIL 0
 typedef enum {FALSE,TRUE} BOOLEAN;
 typedef enum e_node_name {

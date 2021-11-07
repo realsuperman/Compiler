@@ -1,8 +1,6 @@
 %{
 	#define YYSTYPE_IS_DECLARED  1
 	typedef long YYSTYPE;
-	#include <stdio.h>
-	#include <stdlib.h>
 	#include "type.h"
 	extern int line_no;
 	extern int syntax_err;
