@@ -1,4 +1,4 @@
-typedef struct a{
+typedef struct {
     char name[20];
     int age;
     char address[100];
