@@ -59,8 +59,8 @@
 	A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *,ID_KIND,A_ID *);
 	A_TYPE *setTypeStructOrEnumIdentifier(T_KIND,char *,ID_KIND);
 	//BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
-	//BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
-	//BOOLEAN isPointerOrArrayType(A_TYPE *);
+	BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
+	BOOLEAN isPointerOrArrayType(A_TYPE *);
 	void syntax_error();
 	void initialize();
 %}

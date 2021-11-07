@@ -41,8 +41,8 @@ A_TYPE *setTypeExpr(A_TYPE *,A_NODE *);
 A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *,ID_KIND,A_ID *);
 A_TYPE *setTypeStructOrEnumIdentifier(T_KIND,char *,ID_KIND);
 //BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
-//BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
-//BOOLEAN isPointerOrArrayType(A_TYPE *);
+BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
+BOOLEAN isPointerOrArrayType(A_TYPE *);
 void syntax_error();
 void initialize();
 
@@ -267,10 +267,10 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p) {
     a=searchIdentifierAtCurrentLevel(id->name,id->prev);
     if(a) 
         if(a->kind!=ID_FUNC || a->type->expr) syntax_error(12,id->name);
-    /*else {
-        if(isNotSameFormalParameters(a->type->field,id->type->field)) syntax_error(22,id->name);
+    else {
+        //if(isNotSameFormalParameters(a->type->field,id->type->field)) syntax_error(22,id->name);
         if(isNotSameType(a->type->element_type,id->type->element_type)) syntax_error(26,a->name);
-    }*/
+    }
     a=id->type->field;
     while(a){
         if(strlen(a->name)) current_id=a;
@@ -382,10 +382,16 @@ A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *t, ID_KIND k, A_ID *id) {
     if (b) return(TRUE);
     else return(FALSE);
 }
+*/
 BOOLEAN isNotSameType(A_TYPE *t1, A_TYPE *t2) {
     if (isPointerOrArrayType(t1) || isPointerOrArrayType(t2)) return (isNotSameType(t1->element_type,t2->element_type));
     else return (t1!=t2);
-}*/
+}
+
+BOOLEAN isPointerOrArrayType(A_TYPE *t){
+    if(t &&(t->kind==T_POINTER || t->kind==T_ARRAY)) return (TRUE);
+    else return(FALSE);
+}
 
 void initialize() {
     int_type=setTypeAndKindOfDeclarator(makeType(T_ENUM),ID_TYPE,makeIdentifier("int"));
