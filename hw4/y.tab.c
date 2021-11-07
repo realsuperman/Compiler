@@ -78,23 +78,7 @@
 	extern int current_level;
 	extern A_TYPE *int_type;
 	extern char *yytext;
-	void yywrap(char *s);
-	void print_ast(A_NODE *);
-	void prt_program(A_NODE *, int);
-	void prt_initializer(A_NODE *, int);
-	void prt_arg_expr_list(A_NODE *, int);
-	void prt_statement(A_NODE *, int);
-	void prt_statement_list(A_NODE *, int);
-	void prt_for_expression(A_NODE *, int);
-	void prt_expression(A_NODE *, int);
-	void prt_A_TYPE(A_TYPE *, int);
-	void prt_A_ID_LIST(A_ID *, int);
-	void prt_A_ID(A_ID *, int);
-	void prt_A_ID_NAME(A_ID *, int);
-	void prt_STRING(char *, int);
-	void prt_integer(int, int);
-	void print_node(A_NODE *,int);
-	void print_space(int);
+	//void yywrap(char *s);
 	A_NODE *makeNode (NODE_NAME,A_NODE *,A_NODE *,A_NODE *);
 	A_NODE *makeNodeList (NODE_NAME,A_NODE *,A_NODE *);
 	A_ID *makeIdentifier(char *);
@@ -104,8 +88,6 @@
 	A_ID *searchIdentifier(char *,A_ID *);
 	A_ID *searchIdentifierAtCurrentLevel(char *,A_ID *);
 	A_SPECIFIER *updateSpecifier(A_SPECIFIER *, A_TYPE *, S_KIND);
-	void checkForwardReference();
-	void setDefaultSpecifier(A_SPECIFIER *);
 	A_ID *linkDeclaratorList(A_ID *,A_ID *) ;
 	A_ID *getIdentifierDeclared(char *);
 	A_TYPE *getTypeOfStructOrEnumRefIdentifier(T_KIND,char *,ID_KIND);
@@ -128,10 +110,8 @@
 	//BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
 	BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
 	BOOLEAN isPointerOrArrayType(A_TYPE *);
-	void syntax_error();
-	void initialize();
 
-#line 135 "y.tab.c"
+#line 115 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -673,24 +653,24 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    77,    77,    82,    83,    87,    88,    92,    92,    94,
-      94,    99,   100,   104,   105,   109,   114,   115,   116,   117,
-     122,   123,   124,   128,   129,   133,   134,   139,   140,   144,
-     145,   149,   150,   154,   155,   156,   160,   161,   160,   163,
-     163,   163,   165,   169,   170,   174,   175,   179,   183,   184,
-     188,   192,   192,   194,   194,   196,   200,   201,   205,   206,
-     206,   211,   212,   216,   217,   221,   222,   223,   225,   225,
-     230,   231,   235,   236,   240,   241,   245,   246,   250,   251,
-     255,   256,   257,   261,   262,   263,   264,   265,   269,   270,
-     274,   275,   279,   280,   281,   282,   283,   284,   288,   289,
-     293,   293,   298,   299,   303,   304,   305,   309,   310,   311,
-     315,   319,   320,   324,   325,   326,   330,   331,   335,   336,
-     340,   341,   345,   349,   353,   357,   358,   362,   366,   367,
-     371,   372,   376,   380,   384,   388,   389,   390,   394,   395,
-     396,   397,   398,   402,   406,   407,   408,   412,   413,   414,
-     415,   419,   420,   424,   425,   426,   427,   428,   429,   430,
-     431,   432,   433,   437,   438,   440,   442,   444,   446,   448,
-     453,   454,   455,   456,   457,   458,   462
+       0,    57,    57,    62,    63,    67,    68,    72,    72,    74,
+      74,    79,    80,    84,    85,    89,    94,    95,    96,    97,
+     102,   103,   104,   108,   109,   113,   114,   119,   120,   124,
+     125,   129,   130,   134,   135,   136,   140,   141,   140,   143,
+     143,   143,   145,   149,   150,   154,   155,   159,   163,   164,
+     168,   172,   172,   174,   174,   176,   180,   181,   185,   186,
+     186,   191,   192,   196,   197,   201,   202,   203,   205,   205,
+     210,   211,   215,   216,   220,   221,   225,   226,   230,   231,
+     235,   236,   237,   241,   242,   243,   244,   245,   249,   250,
+     254,   255,   259,   260,   261,   262,   263,   264,   268,   269,
+     273,   273,   278,   279,   283,   284,   285,   289,   290,   291,
+     295,   299,   300,   304,   305,   306,   310,   311,   315,   316,
+     320,   321,   325,   329,   333,   337,   338,   342,   346,   347,
+     351,   352,   356,   360,   364,   368,   369,   370,   374,   375,
+     376,   377,   378,   382,   386,   387,   388,   392,   393,   394,
+     395,   399,   400,   404,   405,   406,   407,   408,   409,   410,
+     411,   412,   413,   417,   418,   420,   422,   424,   426,   428,
+     433,   434,   435,   436,   437,   438,   442
 };
 #endif
 
@@ -1732,1057 +1712,1057 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 78 "kim.y"
+#line 58 "kim.y"
         {root=makeNode(N_PROGRAM,NIL,yyvsp[0],NIL); checkForwardReference();}
-#line 1738 "y.tab.c"
+#line 1718 "y.tab.c"
     break;
 
   case 3:
-#line 82 "kim.y"
+#line 62 "kim.y"
                                {yyval=yyvsp[0];}
-#line 1744 "y.tab.c"
+#line 1724 "y.tab.c"
     break;
 
   case 4:
-#line 83 "kim.y"
+#line 63 "kim.y"
                                                 {yyval=linkDeclaratorList(yyvsp[-1],yyvsp[0]);}
-#line 1750 "y.tab.c"
+#line 1730 "y.tab.c"
     break;
 
   case 5:
-#line 87 "kim.y"
+#line 67 "kim.y"
                               {yyval=yyvsp[0];}
-#line 1756 "y.tab.c"
+#line 1736 "y.tab.c"
     break;
 
   case 6:
-#line 88 "kim.y"
+#line 68 "kim.y"
                       {yyval=yyvsp[0];}
-#line 1762 "y.tab.c"
+#line 1742 "y.tab.c"
     break;
 
   case 7:
-#line 92 "kim.y"
+#line 72 "kim.y"
                                             {yyval=setFunctionDeclaratorSpecifier(yyvsp[0],yyvsp[-1]);}
-#line 1768 "y.tab.c"
+#line 1748 "y.tab.c"
     break;
 
   case 8:
-#line 93 "kim.y"
+#line 73 "kim.y"
                           {yyval=setFunctionDeclaratorBody(yyvsp[-1],yyvsp[0]);current_id=yyvsp[-2];}
-#line 1774 "y.tab.c"
+#line 1754 "y.tab.c"
     break;
 
   case 9:
-#line 94 "kim.y"
+#line 74 "kim.y"
                      {yyval=setFunctionDeclaratorSpecifier(yyvsp[0],makeSpecifier(int_type,0));}
-#line 1780 "y.tab.c"
+#line 1760 "y.tab.c"
     break;
 
   case 10:
-#line 95 "kim.y"
+#line 75 "kim.y"
                           {yyval=setFunctionDeclaratorBody(yyvsp[-1],yyvsp[0]);current_id=yyvsp[-2];}
-#line 1786 "y.tab.c"
+#line 1766 "y.tab.c"
     break;
 
   case 11:
-#line 99 "kim.y"
+#line 79 "kim.y"
           {yyval=NIL;}
-#line 1792 "y.tab.c"
+#line 1772 "y.tab.c"
     break;
 
   case 12:
-#line 100 "kim.y"
+#line 80 "kim.y"
                            {yyval=yyvsp[0];}
-#line 1798 "y.tab.c"
+#line 1778 "y.tab.c"
     break;
 
   case 13:
-#line 104 "kim.y"
+#line 84 "kim.y"
                       {yyval=yyvsp[0];}
-#line 1804 "y.tab.c"
+#line 1784 "y.tab.c"
     break;
 
   case 14:
-#line 105 "kim.y"
+#line 85 "kim.y"
                                        {yyval=linkDeclaratorList(yyvsp[-1],yyvsp[0]);}
-#line 1810 "y.tab.c"
+#line 1790 "y.tab.c"
     break;
 
   case 15:
-#line 110 "kim.y"
+#line 90 "kim.y"
         {yyval=setDeclaratorListSpecifier(yyvsp[-1],yyvsp[-2]);}
-#line 1816 "y.tab.c"
+#line 1796 "y.tab.c"
     break;
 
   case 16:
-#line 114 "kim.y"
+#line 94 "kim.y"
                          {yyval=makeSpecifier(yyvsp[0],0);}
-#line 1822 "y.tab.c"
+#line 1802 "y.tab.c"
     break;
 
   case 17:
-#line 115 "kim.y"
+#line 95 "kim.y"
                                   {yyval=makeSpecifier(0,yyvsp[0]);}
-#line 1828 "y.tab.c"
+#line 1808 "y.tab.c"
     break;
 
   case 18:
-#line 116 "kim.y"
+#line 96 "kim.y"
                                                 {yyval=updateSpecifier(yyvsp[0],yyvsp[-1],0);}
-#line 1834 "y.tab.c"
+#line 1814 "y.tab.c"
     break;
 
   case 19:
-#line 118 "kim.y"
+#line 98 "kim.y"
         {yyval=updateSpecifier(yyvsp[0],0,yyvsp[-1]);}
-#line 1840 "y.tab.c"
+#line 1820 "y.tab.c"
     break;
 
   case 20:
-#line 122 "kim.y"
+#line 102 "kim.y"
                    {yyval=S_AUTO;}
-#line 1846 "y.tab.c"
+#line 1826 "y.tab.c"
     break;
 
   case 21:
-#line 123 "kim.y"
+#line 103 "kim.y"
                      {yyval=S_STATIC;}
-#line 1852 "y.tab.c"
+#line 1832 "y.tab.c"
     break;
 
   case 22:
-#line 124 "kim.y"
+#line 104 "kim.y"
                       {yyval=S_TYPEDEF;}
-#line 1858 "y.tab.c"
+#line 1838 "y.tab.c"
     break;
 
   case 23:
-#line 128 "kim.y"
+#line 108 "kim.y"
           {yyval=makeDummyIdentifier();}
-#line 1864 "y.tab.c"
+#line 1844 "y.tab.c"
     break;
 
   case 24:
-#line 129 "kim.y"
+#line 109 "kim.y"
                                {yyval=yyvsp[0];}
-#line 1870 "y.tab.c"
+#line 1850 "y.tab.c"
     break;
 
   case 25:
-#line 133 "kim.y"
+#line 113 "kim.y"
                           {yyval=yyvsp[0];}
-#line 1876 "y.tab.c"
+#line 1856 "y.tab.c"
     break;
 
   case 26:
-#line 135 "kim.y"
+#line 115 "kim.y"
         {yyval=linkDeclaratorList(yyvsp[-2],yyvsp[0]);}
-#line 1882 "y.tab.c"
+#line 1862 "y.tab.c"
     break;
 
   case 27:
-#line 139 "kim.y"
+#line 119 "kim.y"
                      {yyval=yyvsp[0];}
-#line 1888 "y.tab.c"
+#line 1868 "y.tab.c"
     break;
 
   case 28:
-#line 140 "kim.y"
+#line 120 "kim.y"
                                         {yyval=setDeclaratorInit(yyvsp[-2],yyvsp[0]);}
-#line 1894 "y.tab.c"
+#line 1874 "y.tab.c"
     break;
 
   case 29:
-#line 144 "kim.y"
+#line 124 "kim.y"
                               {yyval=makeNode(N_INIT_LIST_ONE,NIL,yyvsp[0],NIL);}
-#line 1900 "y.tab.c"
+#line 1880 "y.tab.c"
     break;
 
   case 30:
-#line 145 "kim.y"
+#line 125 "kim.y"
                                  {yyval=yyvsp[-1];}
-#line 1906 "y.tab.c"
+#line 1886 "y.tab.c"
     break;
 
   case 31:
-#line 149 "kim.y"
+#line 129 "kim.y"
                       {yyval=makeNode(N_INIT_LIST,yyvsp[0],NIL,makeNode(N_INIT_LIST_NIL,NIL,NIL,NIL));}
-#line 1912 "y.tab.c"
+#line 1892 "y.tab.c"
     break;
 
   case 32:
-#line 150 "kim.y"
+#line 130 "kim.y"
                                              {yyval=makeNodeList(N_INIT_LIST,yyvsp[-2],yyvsp[0]);}
-#line 1918 "y.tab.c"
+#line 1898 "y.tab.c"
     break;
 
   case 33:
-#line 154 "kim.y"
+#line 134 "kim.y"
                                 {yyval = yyvsp[0];}
-#line 1924 "y.tab.c"
+#line 1904 "y.tab.c"
     break;
 
   case 34:
-#line 155 "kim.y"
+#line 135 "kim.y"
                               {yyval = yyvsp[0];}
-#line 1930 "y.tab.c"
+#line 1910 "y.tab.c"
     break;
 
   case 35:
-#line 156 "kim.y"
+#line 136 "kim.y"
                           {yyval = yyvsp[0];}
-#line 1936 "y.tab.c"
+#line 1916 "y.tab.c"
     break;
 
   case 36:
-#line 160 "kim.y"
+#line 140 "kim.y"
                                      {yyval=setTypeStructOrEnumIdentifier(yyvsp[-1],yyvsp[0],ID_STRUCT);}
-#line 1942 "y.tab.c"
+#line 1922 "y.tab.c"
     break;
 
   case 37:
-#line 161 "kim.y"
+#line 141 "kim.y"
            { yyval=current_id;current_level++;}
-#line 1948 "y.tab.c"
+#line 1928 "y.tab.c"
     break;
 
   case 38:
-#line 162 "kim.y"
+#line 142 "kim.y"
         {checkForwardReference();yyval=setTypeField(yyvsp[-4],yyvsp[-1]);current_level--;current_id=yyvsp[-2];}
-#line 1954 "y.tab.c"
+#line 1934 "y.tab.c"
     break;
 
   case 39:
-#line 163 "kim.y"
+#line 143 "kim.y"
                           {yyval=makeType(yyvsp[0]);}
-#line 1960 "y.tab.c"
+#line 1940 "y.tab.c"
     break;
 
   case 40:
-#line 163 "kim.y"
+#line 143 "kim.y"
                                                 {yyval=current_id;current_level++;}
-#line 1966 "y.tab.c"
+#line 1946 "y.tab.c"
     break;
 
   case 41:
-#line 164 "kim.y"
+#line 144 "kim.y"
                                    {checkForwardReference();yyval=setTypeField(yyvsp[-4],yyvsp[-1]);current_level--;current_id=yyvsp[-2];}
-#line 1972 "y.tab.c"
+#line 1952 "y.tab.c"
     break;
 
   case 42:
-#line 165 "kim.y"
+#line 145 "kim.y"
                                      {yyval=getTypeOfStructOrEnumRefIdentifier(yyvsp[-1],yyvsp[0],ID_STRUCT);}
-#line 1978 "y.tab.c"
+#line 1958 "y.tab.c"
     break;
 
   case 43:
-#line 169 "kim.y"
+#line 149 "kim.y"
                      {yyval=T_STRUCT;}
-#line 1984 "y.tab.c"
+#line 1964 "y.tab.c"
     break;
 
   case 44:
-#line 170 "kim.y"
+#line 150 "kim.y"
                     {yyval=T_UNION;}
-#line 1990 "y.tab.c"
+#line 1970 "y.tab.c"
     break;
 
   case 45:
-#line 174 "kim.y"
+#line 154 "kim.y"
                              {yyval=yyvsp[0];}
-#line 1996 "y.tab.c"
+#line 1976 "y.tab.c"
     break;
 
   case 46:
-#line 175 "kim.y"
+#line 155 "kim.y"
                                                      {yyval=linkDeclaratorList(yyvsp[-1],yyvsp[0]);}
-#line 2002 "y.tab.c"
+#line 1982 "y.tab.c"
     break;
 
   case 47:
-#line 179 "kim.y"
+#line 159 "kim.y"
                                                           {yyval=setStructDeclaratorListSpecifier(yyvsp[-1],yyvsp[-2]);}
-#line 2008 "y.tab.c"
+#line 1988 "y.tab.c"
     break;
 
   case 48:
-#line 183 "kim.y"
+#line 163 "kim.y"
                             {yyval=yyvsp[0];}
-#line 2014 "y.tab.c"
+#line 1994 "y.tab.c"
     break;
 
   case 49:
-#line 184 "kim.y"
+#line 164 "kim.y"
                                                          {yyval=linkDeclaratorList(yyvsp[-2],yyvsp[0]);}
-#line 2020 "y.tab.c"
+#line 2000 "y.tab.c"
     break;
 
   case 50:
-#line 188 "kim.y"
+#line 168 "kim.y"
                      {yyval=yyvsp[0];}
-#line 2026 "y.tab.c"
+#line 2006 "y.tab.c"
     break;
 
   case 51:
-#line 192 "kim.y"
+#line 172 "kim.y"
                               {yyval=setTypeStructOrEnumIdentifier(T_ENUM,yyvsp[0],ID_ENUM);}
-#line 2032 "y.tab.c"
+#line 2012 "y.tab.c"
     break;
 
   case 52:
-#line 193 "kim.y"
+#line 173 "kim.y"
                               {yyval=setTypeField(yyvsp[-3],yyvsp[-1]);}
-#line 2038 "y.tab.c"
+#line 2018 "y.tab.c"
     break;
 
   case 53:
-#line 194 "kim.y"
+#line 174 "kim.y"
                    {yyval=makeType(T_ENUM);}
-#line 2044 "y.tab.c"
+#line 2024 "y.tab.c"
     break;
 
   case 54:
-#line 195 "kim.y"
+#line 175 "kim.y"
                               {yyval=setTypeField(yyvsp[-3],yyvsp[-1]);}
-#line 2050 "y.tab.c"
+#line 2030 "y.tab.c"
     break;
 
   case 55:
-#line 196 "kim.y"
+#line 176 "kim.y"
                               {yyval=getTypeOfStructOrEnumRefIdentifier(T_ENUM,yyvsp[0],ID_ENUM);}
-#line 2056 "y.tab.c"
+#line 2036 "y.tab.c"
     break;
 
   case 56:
-#line 200 "kim.y"
+#line 180 "kim.y"
                      {yyval=yyvsp[0];}
-#line 2062 "y.tab.c"
+#line 2042 "y.tab.c"
     break;
 
   case 57:
-#line 201 "kim.y"
+#line 181 "kim.y"
                                            {yyval=linkDeclaratorList(yyvsp[-2],yyvsp[0]);}
-#line 2068 "y.tab.c"
+#line 2048 "y.tab.c"
     break;
 
   case 58:
-#line 205 "kim.y"
+#line 185 "kim.y"
                      {yyval=setDeclaratorKind(makeIdentifier(yyvsp[0]),ID_ENUM_LITERAL);}
-#line 2074 "y.tab.c"
+#line 2054 "y.tab.c"
     break;
 
   case 59:
-#line 206 "kim.y"
+#line 186 "kim.y"
                      {yyval=setDeclaratorKind(makeIdentifier(yyvsp[0]),ID_ENUM_LITERAL);}
-#line 2080 "y.tab.c"
+#line 2060 "y.tab.c"
     break;
 
   case 60:
-#line 207 "kim.y"
+#line 187 "kim.y"
                           {yyval=setDeclaratorInit(yyvsp[-2],yyvsp[0]);}
-#line 2086 "y.tab.c"
+#line 2066 "y.tab.c"
     break;
 
   case 61:
-#line 211 "kim.y"
+#line 191 "kim.y"
                                     {yyval=setDeclaratorElementType(yyvsp[0],yyvsp[-1]);}
-#line 2092 "y.tab.c"
+#line 2072 "y.tab.c"
     break;
 
   case 62:
-#line 212 "kim.y"
+#line 192 "kim.y"
                             {yyval=yyvsp[0];}
-#line 2098 "y.tab.c"
+#line 2078 "y.tab.c"
     break;
 
   case 63:
-#line 216 "kim.y"
+#line 196 "kim.y"
                {yyval=makeType(T_POINTER);}
-#line 2104 "y.tab.c"
+#line 2084 "y.tab.c"
     break;
 
   case 64:
-#line 217 "kim.y"
+#line 197 "kim.y"
                        {yyval=setTypeElementType(yyvsp[0],makeType(T_POINTER));}
-#line 2110 "y.tab.c"
+#line 2090 "y.tab.c"
     break;
 
   case 65:
-#line 221 "kim.y"
+#line 201 "kim.y"
                      {yyval=makeIdentifier(yyvsp[0]);}
-#line 2116 "y.tab.c"
+#line 2096 "y.tab.c"
     break;
 
   case 66:
-#line 222 "kim.y"
+#line 202 "kim.y"
                            {yyval=yyvsp[-1];}
-#line 2122 "y.tab.c"
+#line 2102 "y.tab.c"
     break;
 
   case 67:
-#line 224 "kim.y"
+#line 204 "kim.y"
         {yyval=setDeclaratorElementType(yyvsp[-3],setTypeExpr(makeType(T_ARRAY),yyvsp[-1]));}
-#line 2128 "y.tab.c"
+#line 2108 "y.tab.c"
     break;
 
   case 68:
-#line 225 "kim.y"
+#line 205 "kim.y"
                                {yyval=current_id;current_level++;}
-#line 2134 "y.tab.c"
+#line 2114 "y.tab.c"
     break;
 
   case 69:
-#line 226 "kim.y"
+#line 206 "kim.y"
                                    {checkForwardReference();current_id=yyvsp[-2];current_level--;yyval=setDeclaratorElementType(yyvsp[-4],setTypeField(makeType(T_FUNC),yyvsp[-1]));}
-#line 2140 "y.tab.c"
+#line 2120 "y.tab.c"
     break;
 
   case 70:
-#line 230 "kim.y"
+#line 210 "kim.y"
           {yyval=NIL;}
-#line 2146 "y.tab.c"
+#line 2126 "y.tab.c"
     break;
 
   case 71:
-#line 231 "kim.y"
+#line 211 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2152 "y.tab.c"
+#line 2132 "y.tab.c"
     break;
 
   case 72:
-#line 235 "kim.y"
+#line 215 "kim.y"
                          {yyval=yyvsp[0];}
-#line 2158 "y.tab.c"
+#line 2138 "y.tab.c"
     break;
 
   case 73:
-#line 236 "kim.y"
+#line 216 "kim.y"
                                          {yyval=linkDeclaratorList(yyvsp[-2],setDeclaratorKind(makeDummyIdentifier(),ID_PARM));}
-#line 2164 "y.tab.c"
+#line 2144 "y.tab.c"
     break;
 
   case 74:
-#line 240 "kim.y"
+#line 220 "kim.y"
                                 {yyval=yyvsp[0];}
-#line 2170 "y.tab.c"
+#line 2150 "y.tab.c"
     break;
 
   case 75:
-#line 241 "kim.y"
+#line 221 "kim.y"
                                                      {yyval=linkDeclaratorList(yyvsp[-2],yyvsp[0]);}
-#line 2176 "y.tab.c"
+#line 2156 "y.tab.c"
     break;
 
   case 76:
-#line 245 "kim.y"
+#line 225 "kim.y"
                                     {yyval=setParameterDeclaratorSpecifier(yyvsp[0],yyvsp[-1]);}
-#line 2182 "y.tab.c"
+#line 2162 "y.tab.c"
     break;
 
   case 77:
-#line 246 "kim.y"
+#line 226 "kim.y"
                                                  {yyval=setParameterDeclaratorSpecifier(setDeclaratorType(makeDummyIdentifier(),yyvsp[0]),yyvsp[-1]);}
-#line 2188 "y.tab.c"
+#line 2168 "y.tab.c"
     break;
 
   case 78:
-#line 250 "kim.y"
+#line 230 "kim.y"
           {yyval=NIL;}
-#line 2194 "y.tab.c"
+#line 2174 "y.tab.c"
     break;
 
   case 79:
-#line 251 "kim.y"
+#line 231 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2200 "y.tab.c"
+#line 2180 "y.tab.c"
     break;
 
   case 80:
-#line 255 "kim.y"
+#line 235 "kim.y"
                                      {yyval=yyvsp[0];}
-#line 2206 "y.tab.c"
+#line 2186 "y.tab.c"
     break;
 
   case 81:
-#line 256 "kim.y"
+#line 236 "kim.y"
                   {yyval=makeType(T_POINTER);}
-#line 2212 "y.tab.c"
+#line 2192 "y.tab.c"
     break;
 
   case 82:
-#line 257 "kim.y"
+#line 237 "kim.y"
                                              {yyval=setTypeElementType(yyvsp[0],makeType(T_POINTER));}
-#line 2218 "y.tab.c"
+#line 2198 "y.tab.c"
     break;
 
   case 83:
-#line 261 "kim.y"
+#line 241 "kim.y"
                                     {yyval=yyvsp[-1];}
-#line 2224 "y.tab.c"
+#line 2204 "y.tab.c"
     break;
 
   case 84:
-#line 262 "kim.y"
+#line 242 "kim.y"
                                         {yyval=setTypeExpr(makeType(T_ARRAY),yyvsp[-1]);}
-#line 2230 "y.tab.c"
+#line 2210 "y.tab.c"
     break;
 
   case 85:
-#line 263 "kim.y"
+#line 243 "kim.y"
                                                                    {yyval=setTypeElementType(yyvsp[-3],setTypeExpr(makeType(T_ARRAY),yyvsp[-1]));}
-#line 2236 "y.tab.c"
+#line 2216 "y.tab.c"
     break;
 
   case 86:
-#line 264 "kim.y"
+#line 244 "kim.y"
                                         {yyval=setTypeExpr(makeType(T_FUNC),yyvsp[-1]);}
-#line 2242 "y.tab.c"
+#line 2222 "y.tab.c"
     break;
 
   case 87:
-#line 265 "kim.y"
+#line 245 "kim.y"
                                                                    {yyval=setTypeElementType(yyvsp[-3],setTypeExpr(makeType(T_FUNC),yyvsp[-1]));}
-#line 2248 "y.tab.c"
+#line 2228 "y.tab.c"
     break;
 
   case 88:
-#line 269 "kim.y"
+#line 249 "kim.y"
           {yyval=makeNode(N_STMT_LIST_NIL,NIL,NIL,NIL);}
-#line 2254 "y.tab.c"
+#line 2234 "y.tab.c"
     break;
 
   case 89:
-#line 270 "kim.y"
+#line 250 "kim.y"
                          {yyval=yyvsp[0];}
-#line 2260 "y.tab.c"
+#line 2240 "y.tab.c"
     break;
 
   case 90:
-#line 274 "kim.y"
+#line 254 "kim.y"
                     {yyval=makeNode(N_STMT_LIST,yyvsp[0],NIL,makeNode(N_STMT_LIST_NIL,NIL,NIL,NIL));}
-#line 2266 "y.tab.c"
+#line 2246 "y.tab.c"
     break;
 
   case 91:
-#line 275 "kim.y"
+#line 255 "kim.y"
                                    {yyval=makeNodeList(N_STMT_LIST,yyvsp[-1],yyvsp[0]);}
-#line 2272 "y.tab.c"
+#line 2252 "y.tab.c"
     break;
 
   case 92:
-#line 279 "kim.y"
+#line 259 "kim.y"
                             {yyval=yyvsp[0];}
-#line 2278 "y.tab.c"
+#line 2258 "y.tab.c"
     break;
 
   case 93:
-#line 280 "kim.y"
+#line 260 "kim.y"
                              {yyval=yyvsp[0];}
-#line 2284 "y.tab.c"
+#line 2264 "y.tab.c"
     break;
 
   case 94:
-#line 281 "kim.y"
+#line 261 "kim.y"
                                {yyval=yyvsp[0];}
-#line 2290 "y.tab.c"
+#line 2270 "y.tab.c"
     break;
 
   case 95:
-#line 282 "kim.y"
+#line 262 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2296 "y.tab.c"
+#line 2276 "y.tab.c"
     break;
 
   case 96:
-#line 283 "kim.y"
+#line 263 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2302 "y.tab.c"
+#line 2282 "y.tab.c"
     break;
 
   case 97:
-#line 284 "kim.y"
+#line 264 "kim.y"
                          {yyval=yyvsp[0];}
-#line 2308 "y.tab.c"
+#line 2288 "y.tab.c"
     break;
 
   case 98:
-#line 288 "kim.y"
+#line 268 "kim.y"
                                                        {yyval=makeNode(N_STMT_LABEL_CASE, yyvsp[-2],NIL,yyvsp[0]);}
-#line 2314 "y.tab.c"
+#line 2294 "y.tab.c"
     break;
 
   case 99:
-#line 289 "kim.y"
+#line 269 "kim.y"
                                       {yyval=makeNode(N_STMT_LABEL_DEFAULT,NIL,yyvsp[0],NIL);}
-#line 2320 "y.tab.c"
+#line 2300 "y.tab.c"
     break;
 
   case 100:
-#line 293 "kim.y"
+#line 273 "kim.y"
              {yyval=current_id;current_level++;}
-#line 2326 "y.tab.c"
+#line 2306 "y.tab.c"
     break;
 
   case 101:
-#line 294 "kim.y"
+#line 274 "kim.y"
                               {checkForwardReference();yyval=makeNode(N_STMT_COMPOUND,yyvsp[-2],NIL,yyvsp[-1]); current_id=yyvsp[-3];current_level--;}
-#line 2332 "y.tab.c"
+#line 2312 "y.tab.c"
     break;
 
   case 102:
-#line 298 "kim.y"
+#line 278 "kim.y"
                     {yyval=makeNode(N_STMT_EMPTY,NIL,NIL,NIL);}
-#line 2338 "y.tab.c"
+#line 2318 "y.tab.c"
     break;
 
   case 103:
-#line 299 "kim.y"
+#line 279 "kim.y"
                                {yyval=makeNode(N_STMT_EXPRESSION,NIL,yyvsp[-1],NIL);}
-#line 2344 "y.tab.c"
+#line 2324 "y.tab.c"
     break;
 
   case 104:
-#line 303 "kim.y"
+#line 283 "kim.y"
                                             {yyval=makeNode(N_STMT_IF,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2350 "y.tab.c"
+#line 2330 "y.tab.c"
     break;
 
   case 105:
-#line 304 "kim.y"
+#line 284 "kim.y"
                                                                {yyval=makeNode(N_STMT_IF_ELSE,yyvsp[-4],yyvsp[-2],yyvsp[0]);}
-#line 2356 "y.tab.c"
+#line 2336 "y.tab.c"
     break;
 
   case 106:
-#line 305 "kim.y"
+#line 285 "kim.y"
                                                 {yyval=makeNode(N_STMT_SWITCH,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2362 "y.tab.c"
+#line 2342 "y.tab.c"
     break;
 
   case 107:
-#line 309 "kim.y"
+#line 289 "kim.y"
                                                {yyval=makeNode(N_STMT_WHILE,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2368 "y.tab.c"
+#line 2348 "y.tab.c"
     break;
 
   case 108:
-#line 310 "kim.y"
+#line 290 "kim.y"
                                                                 {yyval=makeNode(N_STMT_DO,yyvsp[-5],NIL,yyvsp[-2]);}
-#line 2374 "y.tab.c"
+#line 2354 "y.tab.c"
     break;
 
   case 109:
-#line 311 "kim.y"
+#line 291 "kim.y"
                                                  {yyval=makeNode(N_STMT_FOR,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2380 "y.tab.c"
+#line 2360 "y.tab.c"
     break;
 
   case 110:
-#line 315 "kim.y"
+#line 295 "kim.y"
                                                                            {yyval=makeNode(N_FOR_EXP,yyvsp[-4],yyvsp[-2],yyvsp[0]);}
-#line 2386 "y.tab.c"
+#line 2366 "y.tab.c"
     break;
 
   case 111:
-#line 319 "kim.y"
+#line 299 "kim.y"
                       {yyval=NIL;}
-#line 2392 "y.tab.c"
+#line 2372 "y.tab.c"
     break;
 
   case 112:
-#line 320 "kim.y"
+#line 300 "kim.y"
                      {yyval=yyvsp[0];}
-#line 2398 "y.tab.c"
+#line 2378 "y.tab.c"
     break;
 
   case 113:
-#line 324 "kim.y"
+#line 304 "kim.y"
                                               {yyval=makeNode(N_STMT_RETURN,NIL,yyvsp[-1],NIL);}
-#line 2404 "y.tab.c"
+#line 2384 "y.tab.c"
     break;
 
   case 114:
-#line 325 "kim.y"
+#line 305 "kim.y"
                                  {yyval=makeNode(N_STMT_CONTINUE,NIL,NIL,NIL);}
-#line 2410 "y.tab.c"
+#line 2390 "y.tab.c"
     break;
 
   case 115:
-#line 326 "kim.y"
+#line 306 "kim.y"
                               {yyval=makeNode(N_STMT_BREAK,NIL,NIL,NIL);}
-#line 2416 "y.tab.c"
+#line 2396 "y.tab.c"
     break;
 
   case 116:
-#line 330 "kim.y"
+#line 310 "kim.y"
           {yyval=makeNode(N_ARG_LIST_NIL,NIL,NIL,NIL);}
-#line 2422 "y.tab.c"
+#line 2402 "y.tab.c"
     break;
 
   case 117:
-#line 331 "kim.y"
+#line 311 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2428 "y.tab.c"
+#line 2408 "y.tab.c"
     break;
 
   case 118:
-#line 335 "kim.y"
+#line 315 "kim.y"
                                 {yyval=makeNode(N_ARG_LIST,yyvsp[0],NIL,makeNode(N_ARG_LIST_NIL,NIL,NIL,NIL));}
-#line 2434 "y.tab.c"
+#line 2414 "y.tab.c"
     break;
 
   case 119:
-#line 336 "kim.y"
+#line 316 "kim.y"
                                                           {yyval=makeNodeList(N_ARG_LIST,yyvsp[-2],yyvsp[0]);}
-#line 2440 "y.tab.c"
+#line 2420 "y.tab.c"
     break;
 
   case 120:
-#line 340 "kim.y"
+#line 320 "kim.y"
           {yyval=NIL;}
-#line 2446 "y.tab.c"
+#line 2426 "y.tab.c"
     break;
 
   case 121:
-#line 341 "kim.y"
+#line 321 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2452 "y.tab.c"
+#line 2432 "y.tab.c"
     break;
 
   case 122:
-#line 345 "kim.y"
+#line 325 "kim.y"
                      {yyval=yyvsp[0];}
-#line 2458 "y.tab.c"
+#line 2438 "y.tab.c"
     break;
 
   case 123:
-#line 349 "kim.y"
+#line 329 "kim.y"
                            {yyval=yyvsp[0];}
-#line 2464 "y.tab.c"
+#line 2444 "y.tab.c"
     break;
 
   case 124:
-#line 353 "kim.y"
+#line 333 "kim.y"
                                 {yyval=yyvsp[0];}
-#line 2470 "y.tab.c"
+#line 2450 "y.tab.c"
     break;
 
   case 125:
-#line 357 "kim.y"
+#line 337 "kim.y"
                                  {yyval=yyvsp[0];}
-#line 2476 "y.tab.c"
+#line 2456 "y.tab.c"
     break;
 
   case 126:
-#line 358 "kim.y"
+#line 338 "kim.y"
                                                         {yyval=makeNode(N_EXP_ASSIGN,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2482 "y.tab.c"
+#line 2462 "y.tab.c"
     break;
 
   case 127:
-#line 362 "kim.y"
+#line 342 "kim.y"
                                 {yyval=yyvsp[0];}
-#line 2488 "y.tab.c"
+#line 2468 "y.tab.c"
     break;
 
   case 128:
-#line 366 "kim.y"
+#line 346 "kim.y"
                                  {yyval=yyvsp[0];}
-#line 2494 "y.tab.c"
+#line 2474 "y.tab.c"
     break;
 
   case 129:
-#line 367 "kim.y"
+#line 347 "kim.y"
                                                               {yyval=makeNode(N_EXP_OR,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2500 "y.tab.c"
+#line 2480 "y.tab.c"
     break;
 
   case 130:
-#line 371 "kim.y"
+#line 351 "kim.y"
                                 {yyval=yyvsp[0];}
-#line 2506 "y.tab.c"
+#line 2486 "y.tab.c"
     break;
 
   case 131:
-#line 372 "kim.y"
+#line 352 "kim.y"
                                                               {yyval=makeNode(N_EXP_AND,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2512 "y.tab.c"
+#line 2492 "y.tab.c"
     break;
 
   case 132:
-#line 376 "kim.y"
+#line 356 "kim.y"
                                  {yyval=yyvsp[0];}
-#line 2518 "y.tab.c"
+#line 2498 "y.tab.c"
     break;
 
   case 133:
-#line 380 "kim.y"
+#line 360 "kim.y"
                                  {yyval=yyvsp[0];}
-#line 2524 "y.tab.c"
+#line 2504 "y.tab.c"
     break;
 
   case 134:
-#line 384 "kim.y"
+#line 364 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2530 "y.tab.c"
+#line 2510 "y.tab.c"
     break;
 
   case 135:
-#line 388 "kim.y"
+#line 368 "kim.y"
                                 {yyval=yyvsp[0];}
-#line 2536 "y.tab.c"
+#line 2516 "y.tab.c"
     break;
 
   case 136:
-#line 389 "kim.y"
+#line 369 "kim.y"
                                                         {yyval=makeNode(N_EXP_EQL,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2542 "y.tab.c"
+#line 2522 "y.tab.c"
     break;
 
   case 137:
-#line 390 "kim.y"
+#line 370 "kim.y"
                                                         {yyval=makeNode(N_EXP_NEQ,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2548 "y.tab.c"
+#line 2528 "y.tab.c"
     break;
 
   case 138:
-#line 394 "kim.y"
+#line 374 "kim.y"
                            {yyval=yyvsp[0];}
-#line 2554 "y.tab.c"
+#line 2534 "y.tab.c"
     break;
 
   case 139:
-#line 395 "kim.y"
+#line 375 "kim.y"
                                                      {yyval=makeNode(N_EXP_LSS,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2560 "y.tab.c"
+#line 2540 "y.tab.c"
     break;
 
   case 140:
-#line 396 "kim.y"
+#line 376 "kim.y"
                                                      {yyval=makeNode(N_EXP_GTR,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2566 "y.tab.c"
+#line 2546 "y.tab.c"
     break;
 
   case 141:
-#line 397 "kim.y"
+#line 377 "kim.y"
                                                      {yyval=makeNode(N_EXP_LEQ,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2572 "y.tab.c"
+#line 2552 "y.tab.c"
     break;
 
   case 142:
-#line 398 "kim.y"
+#line 378 "kim.y"
                                                      {yyval=makeNode(N_EXP_GEQ,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2578 "y.tab.c"
+#line 2558 "y.tab.c"
     break;
 
   case 143:
-#line 402 "kim.y"
+#line 382 "kim.y"
                               {yyval=yyvsp[0];}
-#line 2584 "y.tab.c"
+#line 2564 "y.tab.c"
     break;
 
   case 144:
-#line 406 "kim.y"
+#line 386 "kim.y"
                                     {yyval=yyvsp[0];}
-#line 2590 "y.tab.c"
+#line 2570 "y.tab.c"
     break;
 
   case 145:
-#line 407 "kim.y"
+#line 387 "kim.y"
                                                              {yyval=makeNode(N_EXP_ADD,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2596 "y.tab.c"
+#line 2576 "y.tab.c"
     break;
 
   case 146:
-#line 408 "kim.y"
+#line 388 "kim.y"
                                                               {yyval=makeNode(N_EXP_SUB,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2602 "y.tab.c"
+#line 2582 "y.tab.c"
     break;
 
   case 147:
-#line 412 "kim.y"
+#line 392 "kim.y"
                           {yyval=yyvsp[0];}
-#line 2608 "y.tab.c"
+#line 2588 "y.tab.c"
     break;
 
   case 148:
-#line 413 "kim.y"
+#line 393 "kim.y"
                                                          {yyval=makeNode(N_EXP_MUL,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2614 "y.tab.c"
+#line 2594 "y.tab.c"
     break;
 
   case 149:
-#line 414 "kim.y"
+#line 394 "kim.y"
                                                           {yyval= makeNode(N_EXP_DIV,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2620 "y.tab.c"
+#line 2600 "y.tab.c"
     break;
 
   case 150:
-#line 415 "kim.y"
+#line 395 "kim.y"
                                                             {yyval= makeNode(N_EXP_MOD,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2626 "y.tab.c"
+#line 2606 "y.tab.c"
     break;
 
   case 151:
-#line 419 "kim.y"
+#line 399 "kim.y"
                            {yyval=yyvsp[0];}
-#line 2632 "y.tab.c"
+#line 2612 "y.tab.c"
     break;
 
   case 152:
-#line 420 "kim.y"
+#line 400 "kim.y"
                                           {yyval=makeNode(N_EXP_CAST,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2638 "y.tab.c"
+#line 2618 "y.tab.c"
     break;
 
   case 153:
-#line 424 "kim.y"
+#line 404 "kim.y"
                              {yyval=yyvsp[0];}
-#line 2644 "y.tab.c"
+#line 2624 "y.tab.c"
     break;
 
   case 154:
-#line 425 "kim.y"
+#line 405 "kim.y"
                                     {yyval=makeNode(N_EXP_PRE_INC,NIL,yyvsp[0],NIL);}
-#line 2650 "y.tab.c"
+#line 2630 "y.tab.c"
     break;
 
   case 155:
-#line 426 "kim.y"
+#line 406 "kim.y"
                                       {yyval=makeNode(N_EXP_PRE_DEC,NIL,yyvsp[0],NIL);}
-#line 2656 "y.tab.c"
+#line 2636 "y.tab.c"
     break;
 
   case 156:
-#line 427 "kim.y"
+#line 407 "kim.y"
                               {yyval=makeNode(N_EXP_AMP,NIL,yyvsp[0],NIL);}
-#line 2662 "y.tab.c"
+#line 2642 "y.tab.c"
     break;
 
   case 157:
-#line 428 "kim.y"
+#line 408 "kim.y"
                                {yyval=makeNode(N_EXP_STAR,NIL,yyvsp[0],NIL);}
-#line 2668 "y.tab.c"
+#line 2648 "y.tab.c"
     break;
 
   case 158:
-#line 429 "kim.y"
+#line 409 "kim.y"
                                {yyval=makeNode(N_EXP_NOT,NIL,yyvsp[0],NIL);}
-#line 2674 "y.tab.c"
+#line 2654 "y.tab.c"
     break;
 
   case 159:
-#line 430 "kim.y"
+#line 410 "kim.y"
                                 {yyval=makeNode(N_EXP_MINUS,NIL,yyvsp[0],NIL);}
-#line 2680 "y.tab.c"
+#line 2660 "y.tab.c"
     break;
 
   case 160:
-#line 431 "kim.y"
+#line 411 "kim.y"
                                {yyval=makeNode(N_EXP_PLUS,NIL,yyvsp[0],NIL);}
-#line 2686 "y.tab.c"
+#line 2666 "y.tab.c"
     break;
 
   case 161:
-#line 432 "kim.y"
+#line 412 "kim.y"
                                       {yyval=makeNode(N_EXP_SIZE_EXP,NIL,yyvsp[0],NIL);}
-#line 2692 "y.tab.c"
+#line 2672 "y.tab.c"
     break;
 
   case 162:
-#line 433 "kim.y"
+#line 413 "kim.y"
                                      {yyval=makeNode(N_EXP_SIZE_TYPE,NIL,yyvsp[-1],NIL);}
-#line 2698 "y.tab.c"
+#line 2678 "y.tab.c"
     break;
 
   case 163:
-#line 437 "kim.y"
+#line 417 "kim.y"
                              {yyval=yyvsp[0];}
-#line 2704 "y.tab.c"
+#line 2684 "y.tab.c"
     break;
 
   case 164:
-#line 439 "kim.y"
+#line 419 "kim.y"
         {yyval=makeNode(N_EXP_ARRAY,yyvsp[-3],NIL,yyvsp[-1]);}
-#line 2710 "y.tab.c"
+#line 2690 "y.tab.c"
     break;
 
   case 165:
-#line 441 "kim.y"
+#line 421 "kim.y"
         {yyval=makeNode(N_EXP_FUNCTION_CALL,yyvsp[-3],NIL,yyvsp[-1]);}
-#line 2716 "y.tab.c"
+#line 2696 "y.tab.c"
     break;
 
   case 166:
-#line 443 "kim.y"
+#line 423 "kim.y"
         {yyval=makeNode(N_EXP_STRUCT,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2722 "y.tab.c"
+#line 2702 "y.tab.c"
     break;
 
   case 167:
-#line 445 "kim.y"
+#line 425 "kim.y"
         {yyval=makeNode(N_EXP_ARROW,yyvsp[-2],NIL,yyvsp[0]);}
-#line 2728 "y.tab.c"
+#line 2708 "y.tab.c"
     break;
 
   case 168:
-#line 447 "kim.y"
+#line 427 "kim.y"
         {yyval=makeNode(N_EXP_POST_INC,NIL,yyvsp[-1],NIL);}
-#line 2734 "y.tab.c"
+#line 2714 "y.tab.c"
     break;
 
   case 169:
-#line 449 "kim.y"
+#line 429 "kim.y"
         {yyval=makeNode(N_EXP_POST_DEC,NIL,yyvsp[-1],NIL);}
-#line 2740 "y.tab.c"
+#line 2720 "y.tab.c"
     break;
 
   case 170:
-#line 453 "kim.y"
+#line 433 "kim.y"
                      {yyval=makeNode(N_EXP_IDENT,NIL,getIdentifierDeclared(yyvsp[0]),NIL);}
-#line 2746 "y.tab.c"
+#line 2726 "y.tab.c"
     break;
 
   case 171:
-#line 454 "kim.y"
+#line 434 "kim.y"
                            {yyval=makeNode(N_EXP_INT_CONST,NIL,yyvsp[0],NIL);}
-#line 2752 "y.tab.c"
+#line 2732 "y.tab.c"
     break;
 
   case 172:
-#line 455 "kim.y"
+#line 435 "kim.y"
                          {yyval=makeNode(N_EXP_FLOAT_CONST,NIL,yyvsp[0],NIL);}
-#line 2758 "y.tab.c"
+#line 2738 "y.tab.c"
     break;
 
   case 173:
-#line 456 "kim.y"
+#line 436 "kim.y"
                             {yyval=makeNode(N_EXP_CHAR_CONST,NIL,yyvsp[0],NIL);}
-#line 2764 "y.tab.c"
+#line 2744 "y.tab.c"
     break;
 
   case 174:
-#line 457 "kim.y"
+#line 437 "kim.y"
                          {yyval=makeNode(N_EXP_STRING_LITERAL,NIL,yyvsp[0],NIL);}
-#line 2770 "y.tab.c"
+#line 2750 "y.tab.c"
     break;
 
   case 175:
-#line 458 "kim.y"
+#line 438 "kim.y"
                            {yyval=yyvsp[-1];}
-#line 2776 "y.tab.c"
+#line 2756 "y.tab.c"
     break;
 
   case 176:
-#line 462 "kim.y"
+#line 442 "kim.y"
                                                          {yyval=setTypeNameSpecifier(yyvsp[0],yyvsp[-1]);}
-#line 2782 "y.tab.c"
+#line 2762 "y.tab.c"
     break;
 
 
-#line 2786 "y.tab.c"
+#line 2766 "y.tab.c"
 
       default: break;
     }
@@ -3014,7 +2994,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 465 "kim.y"
+#line 445 "kim.y"
 
 
 void yyerror(char *s){

@@ -9,23 +9,7 @@
 	extern int current_level;
 	extern A_TYPE *int_type;
 	extern char *yytext;
-	void yywrap(char *s);
-	void print_ast(A_NODE *);
-	void prt_program(A_NODE *, int);
-	void prt_initializer(A_NODE *, int);
-	void prt_arg_expr_list(A_NODE *, int);
-	void prt_statement(A_NODE *, int);
-	void prt_statement_list(A_NODE *, int);
-	void prt_for_expression(A_NODE *, int);
-	void prt_expression(A_NODE *, int);
-	void prt_A_TYPE(A_TYPE *, int);
-	void prt_A_ID_LIST(A_ID *, int);
-	void prt_A_ID(A_ID *, int);
-	void prt_A_ID_NAME(A_ID *, int);
-	void prt_STRING(char *, int);
-	void prt_integer(int, int);
-	void print_node(A_NODE *,int);
-	void print_space(int);
+	//void yywrap(char *s);
 	A_NODE *makeNode (NODE_NAME,A_NODE *,A_NODE *,A_NODE *);
 	A_NODE *makeNodeList (NODE_NAME,A_NODE *,A_NODE *);
 	A_ID *makeIdentifier(char *);
@@ -35,8 +19,6 @@
 	A_ID *searchIdentifier(char *,A_ID *);
 	A_ID *searchIdentifierAtCurrentLevel(char *,A_ID *);
 	A_SPECIFIER *updateSpecifier(A_SPECIFIER *, A_TYPE *, S_KIND);
-	void checkForwardReference();
-	void setDefaultSpecifier(A_SPECIFIER *);
 	A_ID *linkDeclaratorList(A_ID *,A_ID *) ;
 	A_ID *getIdentifierDeclared(char *);
 	A_TYPE *getTypeOfStructOrEnumRefIdentifier(T_KIND,char *,ID_KIND);
@@ -59,8 +41,6 @@
 	//BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
 	BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
 	BOOLEAN isPointerOrArrayType(A_TYPE *);
-	void syntax_error();
-	void initialize();
 %}
 %start program
 %token  IDENTIFIER TYPE_IDENTIFIER FLOAT_CONSTANT INTEGER_CONSTANT 
