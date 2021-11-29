@@ -38,25 +38,50 @@ void prt_sem_program(A_NODE *node,int s){
 void prt_sem_initializer(A_NODE *node,int s){
 	print_node(node,s);
 	switch(node->name){
-		case N_INIT_LIST : prt_sem_initializer(node->llink,s+1); prt_sem_initializer(node->rlink,s+1); break;
-		case N_INIT_LIST_ONE : prt_sem_expression(node->clink,s+1); break;
-		case N_INIT_LIST_NIL : break;
-		default : printf("****syntax tree error******");
+		case N_INIT_LIST : 
+			prt_sem_initializer(node->llink,s+1); 
+			prt_sem_initializer(node->rlink,s+1); 
+		break;
+		case N_INIT_LIST_ONE : 
+			prt_sem_expression(node->clink,s+1); 
+			break;
+		case N_INIT_LIST_NIL : 
+			break;
+			default : printf("****syntax tree error******");
 	}
 }
 
 void prt_sem_expression(A_NODE *node,int s){
 	print_node(node,s);
 	switch(node->name){
-		case N_EXP_IDENT : prt_sem_A_ID_NAME(node->clink,s+1); break;
-		case N_EXP_INT_CONST : prt_sem_integer(node->clink,s+1); break;
-		case N_EXP_FLOAT_CONST : prt_sem_LITERAL(node->clink,s+1); break;
-		case N_EXP_CHAR_CONST : prt_sem_integer(node->clink,s+1); break;
-		case N_EXP_STRING_LITERAL : prt_sem_LITERAL(node->clink,s+1); break;
-		case N_EXP_ARRAY : prt_sem_expression(node->llink,s+1); prt_sem_expression(node->rlink,s+1); break;
-		case N_EXP_FUNCTION_CALL : prt_sem_expression(node->llink,s+1); prt_sem_arg_expr_list(node->rlink,s+1); break;
-		case N_EXP_STRUCT : prt_sem_expression(node->llink,s+1); prt_sem_A_ID_NAME(node->rlink,s+1); break;
-		case N_EXP_ARROW : prt_sem_expression(node->llink,s+1); prt_sem_A_ID_NAME(node->rlink,s+1); break;
+		case N_EXP_IDENT : 
+			prt_sem_A_ID_NAME(node->clink,s+1); 
+			break;
+		case N_EXP_INT_CONST : 
+			prt_sem_integer(node->clink,s+1); 
+			break;
+		case N_EXP_FLOAT_CONST : 
+			prt_sem_LITERAL(node->clink,s+1); 
+			break;
+		case N_EXP_CHAR_CONST : 
+			prt_sem_integer(node->clink,s+1); 
+			break;
+		case N_EXP_STRING_LITERAL : 
+			prt_sem_LITERAL(node->clink,s+1); 
+			break;
+		case N_EXP_ARRAY : 
+			prt_sem_expression(node->llink,s+1);
+			prt_sem_expression(node->rlink,s+1); 
+			break;
+		case N_EXP_FUNCTION_CALL :
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_arg_expr_list(node->rlink,s+1); break;
+		case N_EXP_STRUCT : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_A_ID_NAME(node->rlink,s+1); break;
+		case N_EXP_ARROW : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_A_ID_NAME(node->rlink,s+1); break;
 		case N_EXP_POST_INC :
 		case N_EXP_POST_DEC :
 		case N_EXP_PRE_INC :
@@ -65,10 +90,14 @@ void prt_sem_expression(A_NODE *node,int s){
 		case N_EXP_STAR :
 		case N_EXP_NOT :
 		case N_EXP_PLUS :
-		case N_EXP_MINUS : prt_sem_expression(node->clink,s+1); break;
+		case N_EXP_MINUS : 
+			prt_sem_expression(node->clink,s+1); break;
 		case N_EXP_SIZE_EXP :
-		case N_EXP_SIZE_TYPE : prt_sem_integer(node->clink,s+1); break;
-		case N_EXP_CAST : prt_sem_A_TYPE(node->llink,s+1); prt_sem_expression(node->rlink,s+1); break;
+		case N_EXP_SIZE_TYPE : 
+			prt_sem_integer(node->clink,s+1); break;
+		case N_EXP_CAST : 
+			prt_sem_A_TYPE(node->llink,s+1); 
+			prt_sem_expression(node->rlink,s+1); break;
 		case N_EXP_MUL :
 		case N_EXP_DIV :
 		case N_EXP_MOD :
@@ -82,7 +111,10 @@ void prt_sem_expression(A_NODE *node,int s){
 		case N_EXP_EQL :
 		case N_EXP_AND :
 		case N_EXP_OR :
-		case N_EXP_ASSIGN : prt_sem_expression(node->llink,s+1); prt_sem_expression(node->rlink,s+1); break;
+		case N_EXP_ASSIGN : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_expression(node->rlink,s+1); 
+		break;
 		default : printf("****syntax tree error******");
 	}
 }
@@ -90,47 +122,96 @@ void prt_sem_expression(A_NODE *node,int s){
 void prt_sem_arg_expr_list(A_NODE *node,int s){
 	print_node(node,s);
 	switch(node->name){
-		case N_ARG_LIST : prt_sem_expression(node->llink,s+1); prt_sem_arg_expr_list(node->rlink,s+1); break;
-		case N_ARG_LIST_NIL : break;
-		default : printf("****syntax tree error******");
+		case N_ARG_LIST : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_arg_expr_list(node->rlink,s+1); 
+			break;
+		case N_ARG_LIST_NIL : 
+			break;
+		default : 
+			printf("****syntax tree error******");
 	}
 }
 
 void prt_sem_statement(A_NODE *node,int s){
 	print_node(node,s);
 	switch(node->name){
-		case N_STMT_LABEL_CASE : prt_sem_integer(node->llink,s+1); prt_sem_statement(node->rlink,s+1); break;
-		case N_STMT_LABEL_DEFAULT : prt_sem_statement(node->clink,s+1); break;
-		case N_STMT_COMPOUND : if(node->llink) prt_sem_A_ID_LIST(node->llink,s+1); prt_sem_statement_list(node->rlink,s+1); break;
-		case N_STMT_EMPTY : break;
-		case N_STMT_EXPRESSION : prt_sem_expression(node->clink,s+1); break;
-		case N_STMT_IF : prt_sem_expression(node->llink,s+1); prt_sem_statement(node->rlink,s+1); break;
-		case N_STMT_IF_ELSE : prt_sem_expression(node->llink,s+1); prt_sem_statement(node->clink,s+1); prt_sem_statement(node->rlink,s+1); break;
-		case N_STMT_SWITCH : prt_sem_expression(node->llink,s+1); prt_sem_statement(node->rlink,s+1); break;
-		case N_STMT_WHILE : prt_sem_expression(node->llink,s+1); prt_sem_statement(node->rlink,s+1); break;
-		case N_STMT_DO : prt_sem_statement(node->llink,s+1); prt_sem_expression(node->rlink,s+1); break;
-		case N_STMT_FOR : prt_sem_for_expression(node->llink,s+1); prt_sem_statement(node->rlink,s+1); break;
-		case N_STMT_CONTINUE : break;
-		case N_STMT_BREAK : break;
-		case N_STMT_RETURN : if(node->clink) prt_sem_expression(node->clink,s+1); break;
-		default : printf("****syntax tree error******");
+		case N_STMT_LABEL_CASE : 
+			prt_sem_integer(node->llink,s+1); 
+			prt_sem_statement(node->rlink,s+1); 
+			break;
+		case N_STMT_LABEL_DEFAULT : 
+			prt_sem_statement(node->clink,s+1); 
+			break;
+		case N_STMT_COMPOUND : 
+			if(node->llink) prt_sem_A_ID_LIST(node->llink,s+1); 
+			prt_sem_statement_list(node->rlink,s+1); 
+			break;
+		case N_STMT_EMPTY :
+			break;
+		case N_STMT_EXPRESSION : 
+			prt_sem_expression(node->clink,s+1); 
+			break;
+		case N_STMT_IF : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_statement(node->rlink,s+1); 
+			break;
+		case N_STMT_IF_ELSE : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_statement(node->clink,s+1); 
+			prt_sem_statement(node->rlink,s+1); 
+			break;
+		case N_STMT_SWITCH : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_statement(node->rlink,s+1); 
+			break;
+		case N_STMT_WHILE : 
+			prt_sem_expression(node->llink,s+1); 
+			prt_sem_statement(node->rlink,s+1); 
+			break;
+		case N_STMT_DO : 
+			prt_sem_statement(node->llink,s+1); 
+			prt_sem_expression(node->rlink,s+1); 
+			break;
+		case N_STMT_FOR : 
+			prt_sem_for_expression(node->llink,s+1); 
+			prt_sem_statement(node->rlink,s+1); 
+			break;
+		case N_STMT_CONTINUE : 
+			break;
+		case N_STMT_BREAK : 
+			break;
+		case N_STMT_RETURN : 
+			if(node->clink) prt_sem_expression(node->clink,s+1); break;
+		default : 
+		printf("****syntax tree error******");
 	}
 }
 
 void prt_sem_statement_list(A_NODE *node,int s){
 	print_node(node,s);
 	switch(node->name){
-		case N_STMT_LIST : prt_sem_statement(node->llink,s+1); prt_sem_statement_list(node->rlink,s+1); break;
-		case N_STMT_LIST_NIL : break;
-		default : printf("****syntax tree error******");
+		case N_STMT_LIST : 
+			prt_sem_statement(node->llink,s+1); 
+			prt_sem_statement_list(node->rlink,s+1); 
+			break;
+		case N_STMT_LIST_NIL : 
+			break;
+		default : 
+		printf("****syntax tree error******");
 	}
 }
 
 void prt_sem_for_expression(A_NODE *node,int s){
 	print_node(node,s);
 	switch(node->name){
-		case N_FOR_EXP : if(node->llink) prt_sem_expression(node->llink,s+1); if(node->clink) prt_sem_expression(node->clink,s+1); if(node->rlink) prt_sem_expression(node->rlink,s+1); break;
-		default : printf("****syntax tree error******");
+		case N_FOR_EXP : 
+			if(node->llink) prt_sem_expression(node->llink,s+1); 
+			if(node->clink) prt_sem_expression(node->clink,s+1); 
+			if(node->rlink) prt_sem_expression(node->rlink,s+1); 
+			break;
+		default : 
+		printf("****syntax tree error******");
 	}
 }
 
@@ -154,15 +235,62 @@ void prt_sem_A_TYPE(A_TYPE *t,int s){
 	else if(t==char_type) printf("(char %d)\n",t->size);
 	else if(t==void_type) printf("(void)\n");
 	else if(t->kind==T_NULL) printf("(null)\n");
-	else if(t->prt==FALSE) printf("(DONE:%x)\n",t);
+	//else if(t->prt==FALSE) printf("(DONE:%x)\n",t);
+	else if(t->prt) printf("(DONE:%x)\n",t);
 	else 
 		switch(t->kind){
-			case T_ENUM : t->prt=FALSE; printf("ENUM\n"); print_space(s); printf("| ENUMERATORS\n"); prt_sem_A_ID_LIST(t->field,s+2); break;
-			case T_POINTER : t->prt=FALSE; printf("POINTER\n"); print_space(s); printf("| ELEMENT_TYPE\n"); prt_sem_A_TYPE(t->element_type,s+2); break;
-			case T_ARRAY : t->prt = FALSE; printf("ARRAY\n"); print_space(s); printf("| INDEX\n"); prt_sem_integer(t->expr,s+2); print_space(s); printf("| ELEMENT_TYPE\n"); prt_sem_A_TYPE(t->element_type,s+2); break;
-			case T_STRUCT : t->prt=FALSE; printf("STRUCT\n"); print_space(s); printf("| FIELD\n"); prt_sem_A_ID_LIST(t->field,s+2); break;
-			case T_UNION : t->prt=FALSE; printf("UNION\n"); print_space(s); printf("| FIELD\n"); prt_sem_A_ID_LIST(t->field,s+2); break;
-			case T_FUNC : t->prt=FALSE; printf("FUNCTION\n"); print_space(s); printf("| PARAMETER\n"); prt_sem_A_ID_LIST(t->field,s+2); print_space(s); printf("| TYPE\n"); prt_sem_A_TYPE(t->element_type,s+2); if(t->expr){print_space(s); printf("| BODY\n"); prt_sem_statement(t->expr,s+2);}
+			case T_ENUM : 
+				t->prt=TRUE; 
+				printf("ENUM\n"); 
+				print_space(s); 
+				printf("| ENUMERATORS\n"); 
+				prt_sem_A_ID_LIST(t->field,s+2); 
+				break;
+			case T_POINTER : 
+				t->prt=TRUE; 
+				printf("POINTER\n"); 
+				print_space(s); 
+				printf("| ELEMENT_TYPE\n"); 
+				prt_sem_A_TYPE(t->element_type,s+2); 
+				break;
+			case T_ARRAY : 
+				t->prt = TRUE; 
+				printf("ARRAY\n"); 
+				print_space(s); 
+				printf("| INDEX\n"); 
+				prt_sem_integer(t->expr,s+2); 
+				print_space(s); 
+				printf("| ELEMENT_TYPE\n"); 
+				prt_sem_A_TYPE(t->element_type,s+2); 
+				break;
+			case T_STRUCT : 
+				t->prt=TRUE; 
+				printf("STRUCT\n"); 
+				print_space(s); 
+				printf("| FIELD\n"); 
+				prt_sem_A_ID_LIST(t->field,s+2); 
+				break;
+			case T_UNION : 
+				t->prt=TRUE; 
+				printf("UNION\n"); 
+				print_space(s); 
+				printf("| FIELD\n"); 
+				prt_sem_A_ID_LIST(t->field,s+2); 
+				break;
+			case T_FUNC : 
+				t->prt=TRUE; 
+				printf("FUNCTION\n"); 
+				print_space(s); 
+				printf("| PARAMETER\n"); 
+				prt_sem_A_ID_LIST(t->field,s+2); 
+				print_space(s); 
+				printf("| TYPE\n"); 
+				prt_sem_A_TYPE(t->element_type,s+2); 
+				if(t->expr){
+					print_space(s); 
+					printf("| BODY\n"); 
+					prt_sem_statement(t->expr,s+2);
+				}
 		}
 }
 

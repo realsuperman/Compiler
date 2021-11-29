@@ -59,8 +59,9 @@ char * node_name[] = {
 	"N_STMT_LIST_NIL",
 	"N_INIT_LIST",
 	"N_INIT_LIST_ONE",
-	"N_INIT_LIST_NIL"};
-void print_ast(A_NODE *);
+	"N_INIT_LIST_NIL"
+};
+/*void print_ast(A_NODE *);
 void prt_program(A_NODE *, int);
 void prt_initializer(A_NODE *, int);
 void prt_arg_expr_list(A_NODE *, int);
@@ -73,7 +74,7 @@ void prt_A_ID_LIST(A_ID *, int);
 void prt_A_ID(A_ID *, int);
 void prt_A_ID_NAME(A_ID *, int);
 void prt_STRING(char *, int);
-void prt_integer(int, int);
+void prt_integer(int, int);*/
 void print_node(A_NODE *,int);
 void print_space(int);
 extern A_TYPE *int_type, *float_type, *char_type, *void_type, *string_type;
@@ -88,7 +89,7 @@ void print_space(int s)
 	int i;
 	for(i=1; i<=s; i++) printf("|  ");
 }
-void print_ast(A_NODE *node) 
+/*void print_ast(A_NODE *node) 
 {
 	printf("=======  syntax tree  ==========\n");
 	prt_program(node,0);
@@ -151,7 +152,8 @@ void prt_expression(A_NODE *node, int s)
 	   case N_EXP_STRUCT : 
 	   case N_EXP_ARROW : 
 		prt_expression(node->llink, s+1);
-		prt_STRING(node->rlink, s+1);
+		//prt_STRING(node->rlink, s+1);
+		prt_A_ID_NAME(node->rlink,s+1);
 		break;
 	   case N_EXP_POST_INC :
 	   case N_EXP_POST_DEC :
@@ -210,18 +212,16 @@ void prt_arg_expr_list(A_NODE *node, int s)
 void prt_statement(A_NODE *node, int s)
 {
 	print_node(node,s);
-	 
 	switch(node->name) {
 	   case N_STMT_LABEL_CASE :
-		prt_expression(node->llink, s+1);
+	    prt_integer(node->llink,s+1);
 		prt_statement(node->rlink, s+1);
 		break;
 	   case N_STMT_LABEL_DEFAULT :
 		prt_statement(node->clink, s+1);
 		break;
 	   case N_STMT_COMPOUND:
-		if(node->llink) 
-			prt_A_ID_LIST(node->llink, s+1);
+		if(node->llink) prt_A_ID_LIST(node->llink, s+1);
 		prt_statement_list(node->rlink, s+1);
 		break;
 	   case N_STMT_EMPTY:
@@ -285,12 +285,9 @@ void prt_for_expression(A_NODE *node, int s)
 	switch(node->name) {
 		
 	   case N_FOR_EXP :
-		if(node->llink) 
-			prt_expression(node->llink, s+1);
-		if(node->clink) 
-			prt_expression(node->clink, s+1);
-		if(node->rlink) 
-			prt_expression(node->rlink, s+1);
+		if(node->llink) prt_expression(node->llink, s+1);
+		if(node->clink) prt_expression(node->clink, s+1);
+		if(node->rlink) prt_expression(node->rlink, s+1);
 		break;
 	   default :
 		printf("****syntax tree error******");
@@ -299,76 +296,82 @@ void prt_for_expression(A_NODE *node, int s)
 void prt_integer(int a, int s)
 {
 	print_space(s);
-	printf("%d\n", a);
+	//printf("%d\n", a);
+	printf("INT=%d\n",a);
 }
+
 void prt_STRING(char *str, int s) {
 	print_space(s);
 	printf("%s\n", str);
 }
+*/
 char *type_kind_name[]={"NULL","ENUM","ARRAY","STRUCT","UNION","FUNC","POINTER","VOID"};
-	
+/*
 void prt_A_TYPE(A_TYPE *t, int s) 
 {
 	print_space(s);
-	if (t==int_type) 
-		printf("(int)\n");
-	else if (t==float_type) 
-		printf("(float)\n");
-	else if (t==char_type) 
-		printf("(char %d)\n",t->size);
-	else if (t==void_type)
-		printf("(void)");
-	else if (t->kind==T_NULL)
-		printf("(null)");
-	else if (t->prt)
-		printf("(DONE:%x)\n",t);
+	if (t==int_type) printf("(int)\n");
+	else if (t==float_type) printf("(float)\n");
+	else if (t==char_type) printf("(char %d)\n",t->size);
+	else if (t==void_type) printf("(void)");
+	else if (t->kind==T_NULL) printf("(null)");
+	//else if (t->prt==FALSE) printf("(DONE:%x)\n",t);
+	else if (t->prt) printf("(DONE:%x)\n",t);
 	else 
 	   switch (t->kind) {
 		case T_ENUM:
 			t->prt=TRUE;
 			printf("ENUM\n");
-			print_space(s); printf("|  ENUMERATORS\n");
+			print_space(s); 
+			printf("|  ENUMERATORS\n");
 			prt_A_ID_LIST(t->field,s+2);
 			break;
 		case T_POINTER:
 			t->prt=TRUE;
 			printf("POINTER\n");
-			print_space(s); printf("|  ELEMENT_TYPE\n");
+			print_space(s); 
+			printf("|  ELEMENT_TYPE\n");
 			prt_A_TYPE(t->element_type,s+2);
 			break;
 		case T_ARRAY:
 			t->prt=TRUE;
 			printf("ARRAY\n");
-			print_space(s); printf("|  INDEX\n");
-			if (t->expr)
-				prt_expression(t->expr,s+2);
-			else 
-				print_space(s+2); printf("(none)\n");
-			print_space(s); printf("|  ELEMENT_TYPE\n");
+			print_space(s); 
+			printf("|  INDEX\n");
+			if (t->expr) prt_expression(t->expr,s+2);
+			else print_space(s+2); printf("(none)\n");
+			print_space(s); 
+			printf("|  ELEMENT_TYPE\n");
 			prt_A_TYPE(t->element_type,s+2);
 			break;
 		case T_STRUCT:
 			t->prt=TRUE;
 			printf("STRUCT\n");
-			print_space(s); printf("|  FIELD\n");
+			print_space(s); 
+			printf("|  FIELD\n");
 			prt_A_ID_LIST(t->field,s+2);
 			break;
 		case T_UNION:
 			t->prt=TRUE;
 			printf("UNION\n");
-			print_space(s); printf("|  FIELD\n");
+			print_space(s); 
+			printf("|  FIELD\n");
 			prt_A_ID_LIST(t->field,s+2);
 			break;
 		case T_FUNC:
 			t->prt=TRUE;
 			printf("FUNCTION\n");
-			print_space(s); printf("|  PARAMETER\n");
+			print_space(s); 
+			printf("|  PARAMETER\n");
 			prt_A_ID_LIST(t->field,s+2);
-			print_space(s); printf("|  TYPE\n");
+			print_space(s); 
+			printf("|  TYPE\n");
 			prt_A_TYPE(t->element_type,s+2);
 			if (t->expr) {
-				print_space(s); printf("|  BODY\n");
-				prt_statement(t->expr,s+2);}
+				print_space(s); 
+				printf("|  BODY\n");
+				prt_statement(t->expr,s+2);
+			}
 	   }
 }
 void prt_A_ID_LIST(A_ID *id, int s)
@@ -378,9 +381,10 @@ void prt_A_ID_LIST(A_ID *id, int s)
 		id=id->link;
 	}
 }
-char *id_kind_name[]={"NULL","VAR","FUNC","PARM","FIELD","TYPE","ENUM", 
-			"STRUCT","ENUM_LITERAL"};
+*/
+char *id_kind_name[]={"NULL","VAR","FUNC","PARM","FIELD","TYPE","ENUM","STRUCT","ENUM_LITERAL"};
 char *spec_name[]={"NULL","AUTO","STATIC","TYPEDEF"};
+/*
 void prt_A_ID_NAME(A_ID *id, int s)
 {
 	print_space(s);
@@ -399,6 +403,8 @@ void prt_A_ID(A_ID *id, int s)
 		printf("|  INIT\n");
 		if (id->kind==ID_ENUM_LITERAL)
 			prt_expression(id->init,s+2);
+			//if(id->init) prt_integer(id->init,s+2);
 		else 
 			prt_initializer(id->init,s+2); }
 }
+*/
