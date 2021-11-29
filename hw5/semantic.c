@@ -1,14 +1,12 @@
 #include "type.h"
-float	atof();
-void		semantic_analysis(A_NODE *);
-void		set_literal_address(A_NODE *);
+void	semantic_analysis(A_NODE *);
+void	set_literal_address(A_NODE *);
 int		put_literal(A_LITERAL, int);
-void		sem_program(A_NODE *);
-
-A_TYPE		*sem_expression(A_NODE *);
+void	sem_program(A_NODE *);
+A_TYPE	*sem_expression(A_NODE *);
 int		sem_statement(A_NODE *, int, A_TYPE *, BOOLEAN, BOOLEAN, BOOLEAN);
 int		sem_statement_list(A_NODE *, int, A_TYPE *, BOOLEAN, BOOLEAN, BOOLEAN);
-void		sem_for_expression(A_NODE *);
+void	sem_for_expression(A_NODE *);
 int		sem_A_TYPE(A_TYPE *) ;
 int		sem_declaration_list(A_ID *, int);
 int		sem_declaration(A_ID *,int);
@@ -41,12 +39,10 @@ BOOLEAN		isPointerOrArrayType(A_TYPE *);
 BOOLEAN		isArrayType(A_TYPE *);
 BOOLEAN		isStringType(A_TYPE *);
 BOOLEAN		isVoidType(A_TYPE *);
-
 A_LITERAL	checkTypeAndConvertLiteral(A_LITERAL,A_TYPE*, int);
 A_LITERAL	getTypeAndValueOfExpression(A_NODE *);
 A_TYPE		*setTypeElementType(A_TYPE *,A_TYPE *);
 A_TYPE		*makeType(T_KIND);
-
 void		setTypeSize(A_TYPE *,int);
 void		semantic_warning(int, int);
 void		semantic_error();
@@ -70,7 +66,6 @@ void semantic_analysis(A_NODE *node)
 
 void set_literal_address(A_NODE *node)
 {
-	printf(">> set_literal_address\n");
 	int i;
 	for (i=1;i<=literal_no; i++)
 		literal_table[i].addr += node->value;
@@ -127,9 +122,9 @@ A_TYPE *sem_expression(A_NODE *node)
 			if(!isArrayType(result))
 				lvalue=TRUE;
 			break;
-		case ID_FUNC:
-		case ID_ENUM_LITERAL:
-			default: semantic_error(38,node->line,id->name);
+		case ID_FUNC: result=id->type; break;
+		case ID_ENUM_LITERAL: result=int_type; break;
+		default: semantic_error(38,node->line,id->name);
 			break;
 		}
 		break;
@@ -388,8 +383,8 @@ A_TYPE *sem_expression(A_NODE *node)
 		if (!isModifiableLvalue(node->llink))
 			semantic_error(60,node->line);
 		t = sem_expression(node->rlink);
-		node->rlink = convertUsualUnaryConversion(node->rlink);
-		t = node->rlink->type;
+		//node->rlink = convertUsualUnaryConversion(node->rlink);
+		//t = node->rlink->type;
 		if (isAllowableAssignmentConversion(result,t,node->rlink)){
 			if (isArithmeticType(result) && isArithmeticType(t))
 				node->rlink = convertUsualAssignmentConversion(result,node->rlink);
@@ -442,8 +437,7 @@ void sem_arg_expr_list(A_NODE *node, A_ID *id)
 			semantic_error(90,node->line);
 			break;
 	}
-	if (arg_size%4)
-		arg_size = arg_size/4*4+4;
+	if (arg_size%4) arg_size = arg_size/4*4+4;
 	node->value = arg_size;
 }
 
