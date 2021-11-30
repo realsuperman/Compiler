@@ -200,7 +200,8 @@ A_TYPE *sem_expression(A_NODE *node)
 		if (isPointerType(t) && isFunctionType(t->element_type)) {
 			// 함수호출식의 파라미터들이 선언문의 파라미터 선언과 일치하는지 검사
 			// 하고 함수의 리턴 타입 계산
-			sem_arg_expr_list(node->rlink,t->element_type->field);
+			//sem_arg_expr_list(node->rlink,t->element_type->field);
+			sem_arg_expr_list(node->rlink,NULL);
 			result=t->element_type->element_type;
 		}
 		else
@@ -411,27 +412,27 @@ void sem_arg_expr_list(A_NODE *node, A_ID *id)
 	// 각각의 타입이 일치하는지 검사 하고 매개변수의 크기 계산하여 저장
 	switch(node->name) {
 		case N_ARG_LIST:
-			if(id==0)
-				semantic_error(34,node->line);
-			else {
-				if(id->type){
+			//if(id==0)
+				//semantic_error(34,node->line);
+			//else {
+				//if(id->type){
 					t=sem_expression(node->llink);
 					node->llink=convertUsualUnaryConversion(node->llink);
-					if(isAllowableCastingConversion(id->type,node->llink->type))
-						node->llink=convertCastingConversion(node->llink,id->type);
-					else
-						semantic_error(59,node->line);
-					sem_arg_expr_list(node->rlink,id->link);
-				} else {
-					t=sem_expression(node->llink);
-					sem_arg_expr_list(node->rlink,id);
-				}
+					//if(isAllowableCastingConversion(id->type,node->llink->type))
+					//	node->llink=convertCastingConversion(node->llink,id->type);
+					//else
+					//	semantic_error(59,node->line);
+					sem_arg_expr_list(node->rlink,NULL);
+				//} else {
+					//t=sem_expression(node->llink);
+					//sem_arg_expr_list(node->rlink,id);
+				//}
 				arg_size=node->llink->type->size+node->rlink->value;
-			}
+			//}
 			break;
 		case N_ARG_LIST_NIL:
-			if(id && id->type)
-				semantic_error(35,node->line);
+			//if(id && id->type)
+			//	semantic_error(35,node->line);
 			break;
 		default:
 			semantic_error(90,node->line);
@@ -1274,118 +1275,118 @@ void semantic_error(int i, int ll, char *s)
 	switch (i) {
 	// errors in expression
 	case 13:
-		printf("arithmetic type expression required in unary operation\n");
+		printf("[%d] arithmetic type expression required in unary operation\n",i);
 		break;
 	case 18:
-		printf("illegal constant expression \n");
+		printf("[%d] illegal constant expression \n",i);
 		break;
 	case 19:
-		printf("illegal identifier %s in constant expression\n",s);
+		printf("[%d] illegal identifier %s in constant expression\n",i,s);
 		break;
 	case 21:
-		printf("illegal type in function call expression\n");
+		printf("[%d] illegal type in function call expression\n",i);
 		break;
 	case 24:
-		printf("incompatible type in additive expression\n");
+		printf("[%d] incompatible type in additive expression\n",i);
 		break;
 	case 27:
-		printf("scalar type expression required in unary or logial-or operation\n");
+		printf("[%d] scalar type expression required in unary or logial-or operation\n",i);
 		break;
 	case 28:
-		printf("arithmetic type expression required in binary operation\n");
+		printf("[%d] arithmetic type expression required in binary operation\n",i);
 		break;
 	case 29:
-		printf("integral type expression required in array subscript or binary operation\n");
+		printf("[%d] integral type expression required in array subscript or binary operation\n",i);
 		break;
 	case 31:
-		printf("pointer type expression required in pointer operation\n");
+		printf("[%d] pointer type expression required in pointer operation\n",i);
 		break;
 	case 32:
-		printf("array type required in array expression\n");
+		printf("[%d] array type required in array expression\n",i);
 		break;
 	case 34:
-		printf("too many arguments in function call\n");
+		printf("[%d] too many arguments in function call\n",i);
 		break;
 	case 35:
-		printf("too few arguments in function call\n");
+		printf("[%d] too few arguments in function call\n",i);
 		break;
 	case 37:
-		printf("illegal struct field identifier in struct reference expression\n");
+		printf("[%d] illegal struct field identifier in struct reference expression\n",i);
 		break;
 	case 38:
-		printf("illegal kind of identifier %s in expression\n");
+		printf("[%d] illegal kind of identifier %s in expression\n",i,s);
 		break;
 	case 39:
-		printf("illegal type size in sizeof operation\n");
+		printf("[%d] illegal type size in sizeof operation\n",i);
 		break;
 	case 40:
-		printf("illegal expression type in relational operation");
+		printf("[%d] illegal expression type in relational operation\n",i);
 		break;
 //	case 41:
 //		printf("incompatible type in literal\n");
 //		break;
 	case 49:
-		printf("scalar type expression required in middle of for-expression\n");
+		printf("[%d] scalar type expression required in middle of for-expression\n",i);
 		break;
 	case 50:
-		printf("integral type expression required in selective or iterative statement\n");
+		printf("[%d] integral type expression required in selective or iterative statement\n",i);
 		break;
 	case 51:
-		printf("illegal expression type in case label\n");
+		printf("[%d] illegal expression type in case label\n",i);
 		break;
 	case 57:
-		printf("not permitted type conversion in return expression\n");
+		printf("[%d] not permitted type conversion in return expression\n",i);
 		break;
 	case 58:
-		printf("not permitted type casting in assignment or type casting expression\n");
+		printf("[%d] not permitted type casting in assignment or type casting expression\n",i);
 		break;
 	case 59:
-		printf("not permitted type conversion in argument\n");
+		printf("[%d] not permitted type conversion in argument\n",i);
 		break;
 	case 60:
-		printf("expression is not an lvalue \n");
+		printf("[%d] expression is not an lvalue \n",i);
 		break;
 	case 71:
-		printf("case label not within a switch statement \n");
+		printf("[%d] case label not within a switch statement \n",i);
 		break;
 	case 72:
-		printf("default label not within a switch statement \n");
+		printf("[%d] default label not within a switch statement \n",i);
 		break;
 	case 73:
-		printf("break statement not within loop or switch statement \n");
+		printf("[%d] break statement not within loop or switch statement \n",i);
 		break;
 	case 74:
-		printf("continue statement not within a loop \n");
+		printf("[%d] continue statement not within a loop \n",i);
 		break;
 	case 80:
-		printf("undefined type\n");
+		printf("[%d] undefined type\n",i);
 		break;
 	case 81:
-		printf("integer type expression required in enumerator\n");
+		printf("[%d] integer type expression required in enumerator\n",i);
 		break;
 	case 82:
-		printf("illegal array size or type\n");
+		printf("[%d] illegal array size or type\n",i);
 		break;
 	case 83:
-		printf("illegal element type of array declarator\n");
+		printf("[%d] illegal element type of array declarator\n",i);
 		break;
 	case 84:
-		printf("illegal type in struct or union field\n");
+		printf("[%d] illegal type in struct or union field\n",i);
 		break;
 	case 85:
-		printf("invalid function return type\n");
+		printf("[%d] invalid function return type\n",i);
 		break;
 	case 86:
-		printf("illegal array size or empty array \n");
+		printf("[%d] illegal array size or empty array \n",i);
 		break;
 	case 89:
-		printf("unknown identifier kind: %s\n",s);
+		printf("[%d] unknown identifier kind: %s\n",i,s);
 		break;
 	case 90:
-		printf("fatal compiler error in parse result\n");
+		printf("[%d] fatal compiler error in parse result\n",i);
 		break;
 	case 93:
-		printf("too many literals in source program \n");
+		printf("[%d] too many literals in source program \n",i);
 		break;
 	default:
 		printf("unknown \n");
@@ -1398,16 +1399,16 @@ void semantic_warning(int i, int ll)
 	printf("--- warning at line %d:",ll);
 	switch (i) {
 	case 11:
-		printf("incompatible types in assignment expression\n");
+		printf("[%d] incompatible types in assignment expression\n",i);
 		break;
 	case 12:
-		printf("incompatible types in argument or return expression\n");
+		printf("[%d] incompatible types in argument or return expression\n",i);
 		break;
 	case 14:
-		printf("incompatible types in binary expression\n");
+		printf("[%d] incompatible types in binary expression\n",i);
 		break;
 	case 16:
-		printf("integer type expression is required\n");
+		printf("[%d] integer type expression is required\n",i);
 		break;
 	default:
 		printf("unknown\n");

@@ -254,9 +254,13 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p) {
     A_ID *a;
     if(p->stor) syntax_error(25);
     setDefaultSpecifier(p);
-    if(id->type->kind!=T_FUNC){
-        syntax_error(21);
-        return(id);
+    //if(id->type->kind!=T_FUNC){
+    //syntax_error(21);
+    //return(id);
+    if(id->type==NIL){ 
+        syntax_error(21); 
+        exit(1);
+        //return(id);
     }else{
         id=setDeclaratorElementType(id,p->type);
         id->kind=ID_FUNC;

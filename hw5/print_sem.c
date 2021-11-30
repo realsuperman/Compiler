@@ -221,6 +221,7 @@ void prt_sem_integer(int a,int s){
 }
 
 void prt_sem_LITERAL(int lit,int s){
+	//printf("%d\n",lit);
 	print_space(s);
 	printf("LITERAL: ");
 	if(literal_table[lit].type == int_type) printf("%d\n",literal_table[lit].value.i);
