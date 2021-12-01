@@ -1,5 +1,6 @@
 int main(){
-    int a=100;
+    int a;
+    a=100;
     switch(a){
         case 10+7: printf("test\n"); break;
         case 11: 

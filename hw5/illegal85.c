@@ -1,3 +1,3 @@
-struct A{int csh;};
-struct A choi[100];
-(choi[]) f(){}
+int fun()[10]{
+    
+}

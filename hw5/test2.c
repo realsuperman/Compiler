@@ -1,5 +1,7 @@
 int main(){
-    int a=100;
-    float bb=(float)a;
+    int a;
+    float bb;
+    a=100;
+    bb=(float)a;
     return 0;
 }

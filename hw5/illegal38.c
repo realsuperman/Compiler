@@ -1,5 +1,6 @@
 struct A{int csh;};
 int main(){
-    int b=13;
+    int b;
+    b=12;
     A+b;
 }
