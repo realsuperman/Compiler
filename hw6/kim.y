@@ -9,6 +9,7 @@
 	extern int current_level;
 	extern A_TYPE *int_type;
 	extern char *yytext;
+	FILE *fout;
 	//void yywrap(char *s);
 	A_NODE *makeNode (NODE_NAME,A_NODE *,A_NODE *,A_NODE *);
 	A_NODE *makeNodeList (NODE_NAME,A_NODE *,A_NODE *);
@@ -481,6 +482,10 @@ void yyerror(char *s){
 }
 void yywrap(char *s){}
 void main() { 
+	if((fout=fopen("a.asm","w"))==NULL){
+		printf("can not open output file: a.asm\n");
+		exit(1);
+	}
     //printf("start syntax analysis\n"); 
     initialize(); 
     yyparse();
@@ -488,6 +493,7 @@ void main() {
 	semantic_analysis(root);
 	if(semantic_err) exit(1);
 	//print_ast(root);
-	print_sem_ast(root);
+	//print_sem_ast(root); // 시멘틱분석트리
+	code_generation(root);
     exit(0);
 }
