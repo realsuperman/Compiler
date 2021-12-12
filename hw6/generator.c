@@ -24,8 +24,8 @@ void gen_program(A_NODE *);
 void gen_expression(A_NODE *); 
 void gen_expression_left(A_NODE *); 
 void gen_arg_expression(A_NODE *);
-void gen_statement(A_NODE *,int, int, A_SWITCH [], int *); 
-void gen_statement_list(A_NODE *,int, int, A_SWITCH [], int *); 
+void gen_statement(A_NODE *,int, int); 
+void gen_statement_list(A_NODE *,int, int); 
 void gen_initializer_global(A_NODE *, A_TYPE *, int); 
 void gen_initializer_local(A_NODE *, A_TYPE *, int); 
 void gen_declaration_list(A_ID *); 
@@ -567,7 +567,7 @@ int get_label()
 	return(label_no);
 }
 
-void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[], int *sn)
+void gen_statement(A_NODE *node, int cont_label, int break_label)
 {
 	A_SWITCH switch_table[100];
 	int switch_no=0;
@@ -575,32 +575,17 @@ void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[],
 	int i,l1,l2,l3;
 	switch(node->name) {
 		case N_STMT_LABEL_CASE :
-			if (sw) {
-				*sn=*sn+1;
-				sw[*sn].kind=SW_VALUE;
-				sw[*sn].val=node->llink;
-				sw[*sn].label=l1=get_label();
-				gen_label_number(l1);
-			}
-			else
-				gen_error(21,node->line);
-			gen_statement(node->rlink,cont_label,break_label,sw,sn);
+			printf("Sorry this command does not service\n");
+			exit(1);
 			break;
 		case N_STMT_LABEL_DEFAULT :
-			if (sw) {
-				*sn=*sn+1;
-				sw[*sn].kind=SW_DEFAULT;
-				sw[*sn].label=l1=get_label();
-				gen_label_number(l1);
-			}
-			else
-				gen_error(20,node->line);
-			gen_statement(node->clink,cont_label,break_label,sw,sn);
+			printf("Sorry this command does not service\n");
+			exit(1);
 			break;
 		case N_STMT_COMPOUND:
 			if(node->llink)
 				gen_declaration_list(node->llink);
-			gen_statement_list(node->rlink,cont_label,break_label,sw,sn);
+			gen_statement_list(node->rlink,cont_label,break_label);
 			break;
 		case N_STMT_EMPTY:
 			break;
@@ -614,23 +599,23 @@ void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[],
 		case N_STMT_IF:
 			gen_expression(node->llink);
 			gen_code_l(JPC, 0, l1=get_label());
-			gen_statement(node->rlink,cont_label,break_label,0,0);
+			gen_statement(node->rlink,cont_label,break_label);
 			gen_label_number(l1); 
 			break;
 		case N_STMT_IF_ELSE:
 			gen_expression(node->llink);
 			gen_code_l(JPC, 0, l1=get_label());
-			gen_statement(node->clink,cont_label,break_label,0,0);
+			gen_statement(node->clink,cont_label,break_label);
 			gen_code_l(JMP, 0, l2=get_label());
 			gen_label_number(l1);
-			gen_statement(node->rlink,cont_label,break_label,0,0);
+			gen_statement(node->rlink,cont_label,break_label);
 			gen_label_number(l2);
 			break;
 		case N_STMT_SWITCH:
 			gen_expression(node->llink);
 			gen_code_l(SWITCH, 0,l1=get_label());
 			gen_code_l(JMP,0,l2=get_label());
-			gen_statement(node->rlink,cont_label,l2,switch_table,&switch_no);
+			gen_statement(node->rlink,cont_label,l2);
 			gen_label_number(l1);
 			for (i=1;i<=switch_no;i++) {
 				if (switch_table[i].kind==SW_VALUE)
@@ -647,7 +632,7 @@ void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[],
 			gen_label_number(l1=get_label());
 			gen_expression(node->llink);
 			gen_code_l(JPC, 0, l2=get_label());
-			gen_statement(node->rlink,l3,l2,0,0);
+			gen_statement(node->rlink,l3,l2);
 			gen_label_number(l3);
 			gen_code_l(JMP, 0, l1);
 			gen_label_number(l2);
@@ -656,7 +641,7 @@ void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[],
 			l3=get_label();
 			l2=get_label();
 			gen_label_number(l1=get_label());
-			gen_statement(node->llink,l2,l3,0,0);
+			gen_statement(node->llink,l2,l3);
 			gen_label_number(l2);
 			gen_expression(node->rlink);
 			gen_code_l(JPT, 0, l1);
@@ -677,7 +662,7 @@ void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[],
 				gen_expression(n->clink); 
 				gen_code_l(JPC, 0, l2);
 			} 
-			gen_statement(node->rlink,l3,l2,0,0); 
+			gen_statement(node->rlink,l3,l2); 
 			gen_label_number(l3); 
 			if (n->rlink) {
 				gen_expression(n->rlink);
@@ -717,12 +702,12 @@ void gen_statement(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[],
 	}
 }
 
-void gen_statement_list(A_NODE *node, int cont_label, int break_label, A_SWITCH sw[], int *sn)
+void gen_statement_list(A_NODE *node, int cont_label, int break_label)
 {
 	switch(node->name) {
 		case N_STMT_LIST:
-			gen_statement(node->llink,cont_label, break_label,sw,sn);
-			gen_statement_list(node->rlink,cont_label, break_label,sw,sn);
+			gen_statement(node->llink,cont_label, break_label);
+			gen_statement_list(node->rlink,cont_label, break_label);
 			break;
 		case N_STMT_LIST_NIL:
 			break;
@@ -763,7 +748,7 @@ void gen_declaration(A_ID *id)
 			if (id->type->expr) {
 				gen_label_name(id->name);
 				gen_code_i(INT,0,id->type->local_var_size);
-				gen_statement(id->type->expr,0,0,0,0);
+				gen_statement(id->type->expr,0,0);
 				gen_code_i(RET,0,0);
 			}
 			break;

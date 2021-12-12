@@ -1,5 +1,7 @@
 int main(){
     int a;
-    a=100;
-    printf("%d",a);
+    switch(a){
+        case 1 : break;
+        default : break;
+    }
 }
