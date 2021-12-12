@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 extern float *stack_f;
 extern char *stack_c;
 extern int stack[];

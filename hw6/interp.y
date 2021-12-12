@@ -1,10 +1,7 @@
 %{
 #define YYSTYPE_IS_DECLARED 1
 typedef long YYSTYPE;
-#include <stdio.h>
-#include <string.h>
 #include "type.h"
-float atof();
 extern FILE *yyin;
 extern char *yytext;
 extern int line_no;

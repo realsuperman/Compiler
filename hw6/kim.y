@@ -9,6 +9,7 @@
 	extern int current_level;
 	extern A_TYPE *int_type;
 	extern char *yytext;
+	extern FILE *yyin;
 	FILE *fout;
 	//void yywrap(char *s);
 	A_NODE *makeNode (NODE_NAME,A_NODE *,A_NODE *,A_NODE *);
@@ -481,9 +482,23 @@ void yyerror(char *s){
 	printf("line %d: %s near %s \n",line_no,s,yytext);
 }
 void yywrap(char *s){}
-void main() { 
-	if((fout=fopen("a.asm","w"))==NULL){
-		printf("can not open output file: a.asm\n");
+void main(int argc,char *argv[]) { 
+	if(argc<2){printf("source file not given\n"); exit(1);}
+	if(strcmp(argv[1],"-o")==0)
+		if(argc>3)
+			if((fout=fopen(argv[2],"w"))==NULL){
+				printf("can not open output file: %s\n",argv[3]);
+				exit(1);
+			}
+			else ;
+		else {printf("out file not given\n"); exit(1);}
+	else if(argc==2)
+		if((fout=fopen("a.asm","w"))==NULL){
+			printf("can not open output file: a.asm\n");
+			exit(1);
+		}
+	if((yyin=fopen(argv[argc-1],"r"))==NULL){
+		printf("can not open input file: %s\n",argv[argc-1]);
 		exit(1);
 	}
     //printf("start syntax analysis\n"); 
