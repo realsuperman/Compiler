@@ -575,12 +575,11 @@ void gen_statement(A_NODE *node, int cont_label, int break_label)
 	int i,l1,l2,l3;
 	switch(node->name) {
 		case N_STMT_LABEL_CASE :
-			printf("Sorry this command does not service\n");
-			exit(1);
+			gen_error(101,node->line,NULL);
 			break;
 		case N_STMT_LABEL_DEFAULT :
-			printf("Sorry this command does not service\n");
-			exit(1);
+			gen_error(101,node->line,NULL);
+			break;
 			break;
 		case N_STMT_COMPOUND:
 			if(node->llink)
@@ -612,20 +611,7 @@ void gen_statement(A_NODE *node, int cont_label, int break_label)
 			gen_label_number(l2);
 			break;
 		case N_STMT_SWITCH:
-			gen_expression(node->llink);
-			gen_code_l(SWITCH, 0,l1=get_label());
-			gen_code_l(JMP,0,l2=get_label());
-			gen_statement(node->rlink,cont_label,l2);
-			gen_label_number(l1);
-			for (i=1;i<=switch_no;i++) {
-				if (switch_table[i].kind==SW_VALUE)
-					gen_code_i(SWVALUE,0,switch_table[i].val);
-				else
-					gen_code_i(SWDEFAULT,0,0);
-				gen_code_l(SWLABEL,0,switch_table[i].label);
-			}
-			gen_code_i(SWEND,0,0);
-			gen_label_number(l2);
+			gen_error(101,node->line,NULL);
 			break;
 		case N_STMT_WHILE:
 			l3=get_label();
@@ -769,7 +755,7 @@ void gen_declaration(A_ID *id)
 void gen_error(int i, int ll, char *s )
 {
 	gen_err++;
-	printf("*** error at line %d: ",ll);
+	printf("*** error at line %d:",ll);
 	switch (i) {
 		case 11:
 			printf("illegal identifier in expression \n"); 
@@ -794,6 +780,9 @@ void gen_error(int i, int ll, char *s )
 			break;
 		case 100:
 			printf("fatal compiler error during code generation\n");
+			break;
+		case 101:
+			if(gen_err==1) printf("sorry this command does not service\n");
 			break;
 		default:
 			printf("unknown \n");

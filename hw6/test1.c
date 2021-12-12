@@ -1,7 +1,7 @@
 int main(){
     int a;
+    a=100;
     switch(a){
-        case 1 : break;
-        default : break;
+
     }
 }

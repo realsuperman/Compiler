@@ -4,6 +4,7 @@
 	#include "type.h"
 	extern int line_no;
 	extern int syntax_err;
+	extern int gen_err;
 	extern A_NODE *root;
 	extern A_ID *current_id;
 	extern int current_level;
@@ -510,5 +511,10 @@ void main(int argc,char *argv[]) {
 	//print_ast(root);
 	//print_sem_ast(root); // 시멘틱분석트리
 	code_generation(root);
+
+	if(gen_err){
+		if(argc>3) remove(argv[2]);
+		else remove("a.asm");
+	} 
     exit(0);
 }
