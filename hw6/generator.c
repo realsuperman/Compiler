@@ -168,7 +168,7 @@ void gen_expression(A_NODE *node)
 			gen_code_i(CAL,0,0);
 			break;
 		case N_EXP_STRUCT :
-			gen_expression_left(node->llink);
+			/*gen_expression_left(node->llink);
 			id=node->rlink;
 			if(id->address>0) {
 				gen_code_i(LITI,0,id->address);
@@ -180,10 +180,11 @@ void gen_expression(A_NODE *node)
 					gen_code_i(LDIB,0,0);
 				else
 					gen_code_i(LDI,0, i%4?i/4+1:i/4);
-			}
+			}*/
+			gen_error(101,node->line,NULL);
 			break;
 		case N_EXP_ARROW:
-			gen_expression(node->llink);
+			/*gen_expression(node->llink);
 			id=node->rlink;
 			if(id->address>0) {
 				gen_code_i(LITI,0,id->address);
@@ -195,7 +196,8 @@ void gen_expression(A_NODE *node)
 					gen_code_i(LDIB,0,0);
 				else
 					gen_code_i(LDI,0, i%4?i/4+1:i/4);
-			}
+			}*/
+			gen_error(101,node->line,NULL);
 			break;
 		case N_EXP_POST_INC :
 			gen_expression(node->clink);
@@ -490,20 +492,22 @@ void gen_expression_left(A_NODE *node)
 			gen_code_i(OFFSET,0,0);
 			break;
 		case N_EXP_STRUCT :
-			gen_expression_left(node->llink);
+			/*gen_expression_left(node->llink);
 			id=node->rlink;
 			if(id->address>0) {
 				gen_code_i(LITI,0,id->address);
 				gen_code_i(OFFSET,0,0);
-			}
+			}*/
+			gen_error(101,node->line,NULL);
 			break;
 		case N_EXP_ARROW :
-			gen_expression(node->llink);
+			/*gen_expression(node->llink);
 			id=node->rlink;
 			if(id->address>0) {
 				gen_code_i(LITI,0,id->address);
 				gen_code_i(OFFSET,0,0);
-			}
+			}*/
+			gen_error(101,node->line,NULL);
 			break;
 		case N_EXP_STAR :
 			gen_expression(node->clink);

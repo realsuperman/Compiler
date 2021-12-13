@@ -1,7 +1,7 @@
 %{
 #define YYSTYPE_IS_DECLARED 1
 typedef long YYSTYPE;
-#include "type.h"
+#include "inter.h"
 extern FILE *yyin;
 extern char *yytext;
 extern int line_no;

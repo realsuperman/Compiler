@@ -1,3 +1,0 @@
-yacc –d interp.y
-lex interp.l
-gcc -w y.tab.c lex.yy.c interp.c lib.c

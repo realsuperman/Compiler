@@ -1,4 +1,4 @@
-#include "type.h"
+#include "inter.h"
 extern char *opcode_name[];
 extern INSTRUCTION code[];
 extern int stack[];
