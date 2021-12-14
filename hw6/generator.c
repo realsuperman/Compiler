@@ -584,7 +584,6 @@ void gen_statement(A_NODE *node, int cont_label, int break_label)
 		case N_STMT_LABEL_DEFAULT :
 			gen_error(101,node->line,NULL);
 			break;
-			break;
 		case N_STMT_COMPOUND:
 			if(node->llink)
 				gen_declaration_list(node->llink);
